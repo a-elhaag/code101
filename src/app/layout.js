@@ -1,5 +1,5 @@
 import { Inter } from "next/font/google";
-import "./globals.css";  
+import "./globals.css";
 
 const roboto = Inter({
   subsets: ["latin"],
@@ -10,6 +10,16 @@ const ibmPlexMono = Inter({
   subsets: ["latin"],
   variable: "--font-ibm-plex-mono",
 });
+
+export const metadata = {
+  title: 'Code101',
+  description: 'Code101 - Learning Platform',
+  icons: {
+    icon: '/favicon.svg',
+    shortcut: '/favicon-16x16.png',
+    apple: '/apple-touch-icon.png',
+  },
+};
 
 export default function RootLayout({ children }) {
   return (
