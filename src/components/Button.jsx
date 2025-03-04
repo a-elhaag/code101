@@ -42,7 +42,7 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
     // Hover styles for each color
     const hoverStyles = {
         black: { backgroundColor: "var(--color-gray)" }, // black → gray
-        white: { opacity: "0.8" }, // slightly fade
+        white: { opacity: "0.5" }, // slightly fade
         blue: { opacity: "0.8" },  // slightly fade
     };
 

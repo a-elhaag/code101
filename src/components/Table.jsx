@@ -183,7 +183,7 @@ const Table = () => {
         .title-text::after {
           content: '';
           position: absolute;
-          bottom: -3px;
+          bottom: -2px;
           left: 0;
           width: 100%;
           height: 2px;
@@ -195,11 +195,11 @@ const Table = () => {
 
         tr.hovered .title-text {
           transform: translateY(-2px);
-          color: white;
+          color: var(--color-blue);
         }
 
         tr.hovered .title-text::after {
-          transform: scaleX(1);
+          transform: scaleX(1.1);
         }
 
         .desc-cell {

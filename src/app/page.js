@@ -2,6 +2,7 @@
 import { useRef, useEffect } from "react";
 import ProjectCard from "@/components/ProjectCard";
 import Table from "@/components/Table";
+import FAQ from "@/components/FAQ";
 
 export default function Home() {
   const contentRef = useRef(null);
@@ -121,6 +122,7 @@ export default function Home() {
       <div ref={contentRef}>
         {/* Add the Table component here */}
         <Table />
+        <FAQ />
       </div>
 
       <main className="project-grid">
