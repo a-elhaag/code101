@@ -1,15 +1,18 @@
-import { Inter } from "next/font/google";
+import { Roboto, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar"; // Import Navbar component
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
 
-const roboto = Inter({
+const roboto = Roboto({
   subsets: ["latin"],
   variable: "--font-roboto",
+  weight: ["300", "400", "700"],
 });
 
-const ibmPlexMono = Inter({
+const ibmPlexMono = IBM_Plex_Mono({
   subsets: ["latin"],
   variable: "--font-ibm-plex-mono",
+  weight: ["400", "700"],
 });
 
 export const metadata = {
@@ -25,9 +28,25 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${roboto.variable} ${ibmPlexMono.variable}`}>
-      <body>
+      <body style={{ margin: 0 }}>
         <Navbar />
-        {children}
+
+        {/* 
+          Give the main content enough padding to not hide behind
+          the fixed navbar (60px) and fixed footer (70px).
+        */}
+        <main
+          style={{
+            minHeight: "100vh",
+            paddingTop: "60px",
+            paddingBottom: "70px",
+            backgroundColor: "var(--color-black)",
+          }}
+        >
+          {children}
+        </main>
+
+        <Footer />
       </body>
     </html>
   );

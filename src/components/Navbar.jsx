@@ -1,11 +1,20 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [navHeight, setNavHeight] = useState(0);
   const pathname = usePathname(); // Current page path
+
+  // Calculate navbar height after component mounts
+  useEffect(() => {
+    const navbar = document.querySelector('.navbar');
+    if (navbar) {
+      setNavHeight(navbar.offsetHeight);
+    }
+  }, []);
 
   // Helper to set active link color
   const getLinkStyle = (href) => ({
@@ -18,139 +27,147 @@ export default function Navbar() {
   });
 
   return (
-    <nav className="navbar">
-      {/* Desktop Navigation */}
-      <div className="desktop-links">
-        <Link href="/" style={getLinkStyle("/")}>
-          Home
-        </Link>
-        <Link href="/about" style={getLinkStyle("/about")}>
-          About
-        </Link>
-        <Link href="/projects" style={getLinkStyle("/projects")}>
-          Projects
-        </Link>
-        <Link href="/submit" style={getLinkStyle("/submit")}>
-          Submit a Project
-        </Link>
-        <Link href="/crew" style={getLinkStyle("/submit")}>
-          Meet the Crew
-        </Link>
-      </div>
+    <>
+      {/* Spacer div that matches navbar height */}
+      <div style={{ height: navHeight }} />
 
-      {/* Mobile Menu Button */}
-      <button
-        className={`mobile-button ${isOpen ? "open" : ""}`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {isOpen ? "✕" : "☰"}
-      </button>
+      <nav className="navbar">
+        {/* Desktop Navigation */}
+        <div className="desktop-links">
+          <Link href="/" style={getLinkStyle("/")}>
+            Home
+          </Link>
+          <Link href="/about" style={getLinkStyle("/about")}>
+            About
+          </Link>
+          <Link href="/projects" style={getLinkStyle("/projects")}>
+            Projects
+          </Link>
+          <Link href="/submit" style={getLinkStyle("/submit")}>
+            Submit a Project
+          </Link>
+          <Link href="/crew" style={getLinkStyle("/crew")}>
+            Meet the Crew
+          </Link>
+        </div>
 
-      {/* Mobile Navigation */}
-      <div className={`mobile-menu ${isOpen ? "open" : ""}`}>
-        <Link href="/" style={getLinkStyle("/")} onClick={() => setIsOpen(false)}>
-          Home
-        </Link>
-        <Link
-          href="/about"
-          style={getLinkStyle("/about")}
-          onClick={() => setIsOpen(false)}
+        {/* Mobile Menu Button */}
+        <button
+          className={`mobile-button ${isOpen ? "open" : ""}`}
+          onClick={() => setIsOpen(!isOpen)}
+          aria-label="Toggle menu"
         >
-          About
-        </Link>
-        <Link
-          href="/projects"
-          style={getLinkStyle("/projects")}
-          onClick={() => setIsOpen(false)}
-        >
-          Projects
-        </Link>
-        <Link
-          href="/submit"
-          style={getLinkStyle("/submit")}
-          onClick={() => setIsOpen(false)}
-        >
-          Submit
-        </Link>
-      </div>
+          {isOpen ? "✕" : "☰"}
+        </button>
 
-      <style jsx>{`
-        .navbar {
-          position: fixed; /* Fixed so it stays in place on scroll */
-          top: 0;
-          left: 0;
-          width: 100%;
-          background-color: var(--color-black);
-          color: var(--color-white);
-          padding: 1.5rem 0; /* Enlarged padding */
-          margin-bottom: 1.3rem; /* Add margin-bottom so content isn't too close */
-          /* Removed bottom border */
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          z-index: 1000;
-        }
+        {/* Mobile Navigation */}
+        <div className={`mobile-menu ${isOpen ? "open" : ""}`}>
+          <Link href="/" style={getLinkStyle("/")} onClick={() => setIsOpen(false)}>
+            Home
+          </Link>
+          <Link
+            href="/about"
+            style={getLinkStyle("/about")}
+            onClick={() => setIsOpen(false)}
+          >
+            About
+          </Link>
+          <Link
+            href="/projects"
+            style={getLinkStyle("/projects")}
+            onClick={() => setIsOpen(false)}
+          >
+            Projects
+          </Link>
+          <Link
+            href="/submit"
+            style={getLinkStyle("/submit")}
+            onClick={() => setIsOpen(false)}
+          >
+            Submit
+          </Link>
+          <Link
+            href="/crew"
+            style={getLinkStyle("/crew")}
+            onClick={() => setIsOpen(false)}
+          >
+            Meet the Crew
+          </Link>
+        </div>
 
-        /* Desktop navigation (default) */
-        .desktop-links {
-          display: flex;
-          gap: 1.5rem;
-        }
+        <style jsx>{`
+          .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            color: var(--color-white);
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+          }
 
-        /* Mobile button is hidden by default on desktop */
-        .mobile-button {
-          position: center;
-          right: 2rem;
-          background: none;
-          border: none;
-          color: var(--color-white);
-          font-size: 2rem; /* Larger button on mobile */
-          cursor: pointer;
-          display: none; /* hide on desktop */
-          transition: transform 0.5s ease-in-out; /* Smoother transition */
-        }
-
-        /* Rotate the button slightly when open (optional flair) */
-        .mobile-button.open {
-          transform: rotate(90deg);
-        }
-
-        /* Mobile menu is hidden by default */
-        .mobile-menu {
-          position: absolute;
-          top: -350px; /* Hidden off-screen */
-          left: 0;
-          width: 100%;
-          background-color: var(--color-black);
-          padding: 1rem 0; /* More vertical space */
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: 1rem;
-          transition: top 0.5s ease-in-out; /* Smoother animation */
-        }
-
-        /* Mobile menu when open */
-        .mobile-menu.open {
-          top: 100%;
-        }
-
-        /* Screen width < 768px => hide desktop links, show mobile button */
-        @media (max-width: 767px) {
           .desktop-links {
-            display: none; /* hide on mobile */
+            display: flex;
+            gap: 1.5rem;
           }
 
           .mobile-button {
-            display: block; /* show on mobile */
+            background: none;
+            border: none;
+            color: var(--color-white);
+            font-size: 2rem;
+            cursor: pointer;
+            display: none;
+            transition: transform 0.5s ease-in-out;
           }
 
-          /* Increase font sizes/padding for better mobile UX */
-          .mobile-menu a {
-            font-size: 4xrem; /* larger link text */
+          .mobile-button.open {
+            transform: rotate(90deg);
           }
-        }
-      `}</style>
-    </nav>
+
+          .mobile-menu {
+            position: absolute;
+            top: -350px;
+            left: 0;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.95);
+            padding: 1rem 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            transition: top 0.5s ease-in-out;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+          }
+
+          .mobile-menu.open {
+            top: 100%;
+          }
+
+          @media (max-width: 767px) {
+            .desktop-links {
+              display: none;
+            }
+
+            .mobile-button {
+              display: block;
+              position: absolute;
+              right: 2rem;
+            }
+
+            .mobile-menu a {
+              font-size: 1.6rem;
+              padding: 1rem 0;
+            }
+          }
+        `}</style>
+      </nav>
+    </>
   );
 }
