@@ -1,5 +1,5 @@
 "use client";
-import React from "react"
+import React from "react";
 
 export default function About() {
   return (
@@ -11,13 +11,13 @@ export default function About() {
       </header>
       <section className="content">
         <p>
-          Welcome to Code<span className="highlight">101</span>—your friendly hub where developers of all levels come together to learn, build, and share. We’re here to empower you to grow your skills, experiment with new ideas, and collaborate with an amazing community.
+          Welcome to Code<span className="highlight">101</span>—your friendly hub where developers of all levels come together to learn, build, and share. We&apos;re here to empower you to grow your skills, experiment with new ideas, and collaborate with an amazing community.
         </p>
         <p>
-          At Code<span className="highlight">101</span>, we believe that learning should be fun and that every project is a chance to create something awesome. Our three pillars—<span className="highlight">Learn</span>, <span className="highlight">Build</span>, and <span className="highlight">Share</span>—aren’t just words; they’re the heart and soul of our community.
+          At Code<span className="highlight">101</span>, we believe that learning should be fun and that every project is a chance to create something awesome. Our three pillars—<span className="highlight">Learn</span>, <span className="highlight">Build</span>, and <span className="highlight">Share</span>—aren&apos;t just words; they&apos;re the heart and soul of our community.
         </p>
         <p>
-          We’re passionate about open‑source collaboration and work together to turn innovative ideas into real‑world projects. Here, every contribution is celebrated, and every voice is heard. Whether you're just starting out or a seasoned developer, you’ll find support, friendly advice, and plenty of inspiration.
+          We&apos;re passionate about open‑source collaboration and work together to turn innovative ideas into real‑world projects. Here, every contribution is celebrated, and every voice is heard. Whether you&apos;re just starting out or a seasoned developer, you&apos;ll find support, friendly advice, and plenty of inspiration.
         </p>
         <p>
           Our journey started with a simple vision—to create a warm, welcoming space where knowledge flows freely and creativity thrives. Today, we continue to evolve our platform, always staying true to our values of transparency, collaboration, and genuine support.
