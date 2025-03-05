@@ -2,6 +2,7 @@ import { Roboto, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import { Analytics } from "@vercel/analytics/react";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -47,6 +48,7 @@ export default function RootLayout({ children }) {
         </main>
 
         <Footer />
+        <Analytics />
       </body>
     </html>
   );
