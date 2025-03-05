@@ -123,6 +123,7 @@ export default function Home() {
         {/* Add the Table component here */}
         <Table />
         <FAQ />
+
       </div>
 
       <main className="project-grid">
