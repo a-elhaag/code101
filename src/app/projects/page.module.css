@@ -1,0 +1,39 @@
+.projectsPage {
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.pageHeader {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.pageHeading {
+    font-size: 2.5rem;
+    background: linear-gradient(to right, #fff, var(--color-blue));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+}
+
+.pageDescription {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.8);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.projectsGrid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: center;
+}
+
+.noProjects {
+    text-align: center;
+    padding: 3rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 1.2rem;
+}
