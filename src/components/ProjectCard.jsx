@@ -3,79 +3,94 @@ import React, { useState, useRef, useEffect } from "react";
 import Button from "./Button";
 
 export default function ProjectCard({ title, owner, description, repoLink }) {
-    const [isHovered, setIsHovered] = useState(false);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const cardRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const cardRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const descriptionRef = useRef(null);
 
-    // Track mouse position for the radial gradient
-    const handleMouseMove = (e) => {
-        if (cardRef.current) {
-            const rect = cardRef.current.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            setMousePos({ x, y });
+  // Track mouse position for the radial gradient
+  const handleMouseMove = (e) => {
+    if (cardRef.current) {
+      const rect = cardRef.current.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      setMousePos({ x, y });
+    }
+  };
+
+  // Check if description needs truncation
+  useEffect(() => {
+    if (descriptionRef.current) {
+      const isOverflowing = descriptionRef.current.scrollHeight > descriptionRef.current.clientHeight;
+      setIsTruncated(isOverflowing);
+    }
+  }, [description]);
+
+  // Intersection Observer to fade in only when visible
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
         }
+      },
+      { threshold: 0.1 }
+    );
+
+    if (cardRef.current) {
+      observer.observe(cardRef.current);
+    }
+
+    return () => {
+      if (cardRef.current) {
+        observer.unobserve(cardRef.current);
+      }
     };
+  }, []);
 
-    // Intersection Observer to fade in only when visible
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.unobserve(entry.target);
-                }
-            },
-            { threshold: 0.1 }
-        );
+  return (
+    <div
+      ref={cardRef}
+      className={`project-card ${isVisible ? "visible" : ""} ${isHovered ? "hovered" : ""}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      onMouseMove={handleMouseMove}
+      style={{
+        "--mouse-x": `${mousePos.x}px`,
+        "--mouse-y": `${mousePos.y}px`,
+      }}
+    >
+      <div className="card-content">
+        <h2 className="card-title">{title}</h2>
+        <p className="card-owner">{owner}</p>
+        <div className="description-container">
+          <p className="card-description" ref={descriptionRef}>
+            {description}
+          </p>
+          {isTruncated && <span className="ellipsis">...</span>}
+        </div>
+      </div>
 
-        if (cardRef.current) {
-            observer.observe(cardRef.current);
-        }
-
-        return () => {
-            if (cardRef.current) {
-                observer.unobserve(cardRef.current);
-            }
-        };
-    }, []);
-
-    return (
-        <div
-            ref={cardRef}
-            className={`project-card ${isVisible ? "visible" : ""} ${isHovered ? "hovered" : ""}`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-            onMouseMove={handleMouseMove}
-            style={{
-                "--mouse-x": `${mousePos.x}px`,
-                "--mouse-y": `${mousePos.y}px`,
-            }}
+      <div className="card-action">
+        <Button
+          size="md"
+          color="white"
+          onClick={() => {
+            if (repoLink) window.open(repoLink, "_blank");
+          }}
         >
-            <div className="card-content">
-                <h2 className="card-title">{title}</h2>
-                <p className="card-owner">{owner}</p>
-                <p className="card-description">{description}</p>
-            </div>
+          View the repo
+        </Button>
+      </div>
 
-            <div className="card-action">
-                <Button
-                    size="md"
-                    color="white"
-                    onClick={() => {
-                        if (repoLink) window.open(repoLink, "_blank");
-                    }}
-                >
-                    View the repo
-                </Button>
-            </div>
-
-            <style jsx>{`
+      <style jsx>{`
                 /* Basic styles */
                 .project-card {
                   width: 280px;
-                  min-height: 400px;
+                  height: 400px;
                   border-radius: 12px;
                   padding: 1.5rem;
                   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -112,7 +127,7 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                   }
                 }
                 
-                /* Hover effect to mimic the table’s radial gradient & box-shadow highlight */
+                /* Hover effect to mimic the table's radial gradient & box-shadow highlight */
                 .project-card.hovered {
                   background: radial-gradient(
                       circle 80px at var(--mouse-x) var(--mouse-y),
@@ -124,7 +139,7 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                   box-shadow: 0 0 30px rgba(0, 120, 255, 0.3) inset;
                 }
                 
-                /* Shimmer effect on hover (like the table’s ::after). */
+                /* Shimmer effect on hover (like the table's ::after). */
                 .project-card.hovered::after {
                   content: "";
                   position: absolute;
@@ -158,6 +173,7 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                   flex-grow: 1;
                   display: flex;
                   flex-direction: column;
+                  overflow: hidden;
                 }
                 
                 /* Title with underline effect */
@@ -168,6 +184,10 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                   position: relative;
                   display: inline-block;
                   transition: transform 0.3s ease, color 0.3s ease;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  max-width: 100%;
                 }
                 
                 .card-title::after {
@@ -198,21 +218,43 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                   margin-top: 2rem;
                   margin-bottom: 0;
                   opacity: 0.9;
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                }
+                
+                .description-container {
+                  position: relative;
+                  height: 150px;
+                  overflow: hidden;
+                  margin-top: 2rem;
                 }
                 
                 .card-description {
                   font-family: var(--font-roboto);
                   font-size: 1rem;
                   line-height: 1.6;
-                  margin: 2rem 0 0;
+                  margin: 0;
                   opacity: 0.85;
+                  height: 100%;
+                  overflow: hidden;
+                }
+                
+                .ellipsis {
+                  position: absolute;
+                  bottom: 0;
+                  right: 0;
+                  color: var(--color-blue);
+                  font-weight: bold;
+                  background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.8) 50%);
+                  padding: 0 4px 0 20px;
                 }
                 
                 /* Centering the button */
                 .card-action {
                   position: relative;
                   z-index: 1;
-                  margin-top: 1rem;
+                  margin-top: auto;
                   display: flex;
                   justify-content: center;
                 }
@@ -222,13 +264,17 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                   .project-card {
                     width: 100%;
                     max-width: 350px;
-                    min-height: 350px;
+                    height: 400px;
+                  }
+                  
+                  .description-container {
+                    height: 130px;
                   }
                 }
                 
                 @media (max-width: 480px) {
                   .project-card {
-                    min-height: 300px;
+                    height: 380px;
                     padding: 1.2rem;
                   }
                 
@@ -236,12 +282,16 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
                     font-size: 1.3rem;
                   }
                 
+                  .description-container {
+                    height: 120px;
+                    margin-top: 1.5rem;
+                  }
+                  
                   .card-description {
                     font-size: 0.95rem;
-                    margin-top: 1.5rem;
                   }
                 }
             `}</style>
-        </div>
-    );
+    </div>
+  );
 }

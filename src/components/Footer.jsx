@@ -1,66 +1,70 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FaTwitter, FaGithub, FaLinkedin, FaInstagram, FaMedium, FaYoutube } from "react-icons/fa";
+import { FaTwitter, FaGithub, FaLinkedin, FaInstagram, FaMedium, FaYoutube, FaFacebook, FaGlobe } from "react-icons/fa";
 
 export default function Footer({
-    iconSrc = "/code101-logo.svg",
-    socialLinks = {
-        twitter: "https://twitter.com/your-handle",
-        github: "https://github.com/your-profile",
-        linkedin: "https://linkedin.com/in/your-profile",
-        instagram: "https://instagram.com/your-profile",
-        medium: "https://medium.com/@your-profile",
-        youtube: "https://youtube.com/your-channel",
-    },
+  iconSrc = "/code101-logo.svg",
+  socialLinks = {
+    twitter: "https://twitter.com/your-handle",
+    github: "https://github.com/your-profile",
+    linkedin: "https://linkedin.com/in/your-profile",
+    instagram: "https://instagram.com/your-profile",
+    medium: "https://medium.com/@your-profile",
+    youtube: "",
+    facebook: "",
+    website: "https://yourwebsite.com",
+  },
 }) {
-    // Filter out empty links
-    const availableSocialLinks = Object.entries(socialLinks).filter(
-        ([, url]) => url && url.trim() !== ""
-    );
+  // Filter out empty links
+  const availableSocialLinks = Object.entries(socialLinks).filter(
+    ([, url]) => url && url.trim() !== ""
+  );
 
-    // Map each platform to a React Icon
-    const socialIcons = {
-        twitter: <FaTwitter />,
-        github: <FaGithub />,
-        linkedin: <FaLinkedin />,
-        instagram: <FaInstagram />,
-        medium: <FaMedium />,
-        youtube: <FaYoutube />,
-    };
+  // Map each platform to a React Icon - added FaGlobe for website
+  const socialIcons = {
+    twitter: <FaTwitter />,
+    github: <FaGithub />,
+    linkedin: <FaLinkedin />,
+    instagram: <FaInstagram />,
+    medium: <FaMedium />,
+    youtube: <FaYoutube />,
+    facebook: <FaFacebook />,
+    website: <FaGlobe />,
+  };
 
-    return (
-        <footer className="footer">
-            <div className="footer-content">
+  return (
+    <footer className="footer">
+      <div className="footer-content">
 
-                <div className="footer-left">
-                    <img src="/logo.svg" alt="Code101 Logo" className="footer-logo" />
-                </div>
+        <div className="footer-left">
+          <img src="/logo.svg" alt="Code101 Logo" className="footer-logo" />
+        </div>
 
-                {/* Center: Social Media Icons */}
-                <div className="footer-center">
-                    {availableSocialLinks.map(([platform, url]) => (
-                        <a
-                            key={platform}
-                            href={url}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="social-link"
-                        >
-                            {socialIcons[platform]}
-                        </a>
-                    ))}
-                </div>
+        {/* Center: Social Media Icons */}
+        <div className="footer-center">
+          {availableSocialLinks.map(([platform, url]) => (
+            <a
+              key={platform}
+              href={url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="social-link"
+            >
+              {socialIcons[platform]}
+            </a>
+          ))}
+        </div>
 
-                {/* Right: Legal Links */}
-                <div className="footer-right">
-                    <a className="footer-link">
-                        &copy; 2025 Code101
-                    </a>
-                </div>
-            </div>
+        {/* Right: Legal Links */}
+        <div className="footer-right">
+          <a className="footer-link">
+            &copy; 2025 Code101
+          </a>
+        </div>
+      </div>
 
-            <style jsx>{`
+      <style jsx>{`
         .footer {
           width: 100%;
           background: #000;
@@ -118,15 +122,15 @@ export default function Footer({
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background-color: transparent;
+          background-color: rgba(255, 255, 255, 0.1);
           transition: background-color 0.3s ease, transform 0.3s ease;
           font-size: 1.8rem;
         }
 
         .social-link:hover {
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: var(--color-blue);
           transform: scale(1.2);
-          color: var(--color-blue);
+          color: var(--color-white);
         }
 
         .footer-link {
@@ -170,6 +174,6 @@ export default function Footer({
           }
         }
       `}</style>
-        </footer>
-    );
+    </footer>
+  );
 }

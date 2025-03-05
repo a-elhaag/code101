@@ -136,7 +136,7 @@ export default function Home() {
         <ProjectCard
           title="Another Project"
           owner="Team Code101"
-          description="Collaboration is the key!"
+          description="Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!Collaboration is the key!"
           repoLink="https://github.com/another/repo"
         />
       </main>

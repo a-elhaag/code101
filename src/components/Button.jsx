@@ -10,7 +10,7 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
         borderRadius: "6px",
         transition: "all 0.3s ease",
         cursor: "pointer",
-        fontFamily: "var(--font-ibm-plex-mono)", // or var(--font-roboto) if desired
+        fontFamily: "var(--font-ibm-plex-mono)", 
     };
 
     // Size variants
