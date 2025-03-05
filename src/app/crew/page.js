@@ -23,13 +23,6 @@ export default function MeetTheCrew() {
           min-height: 100vh;
           background-color: var(--background-dark);
         }
-        .page-heading {
-          font-family: var(--font-ibm-plex-mono);
-          font-size: 2.5rem;
-          color: var(--color-white);
-          margin-bottom: 2rem;
-          text-align: center;
-        }
         .crew-grid {
           display: flex;
           flex-wrap: wrap;

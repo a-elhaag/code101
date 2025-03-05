@@ -28,8 +28,8 @@ export default function Navbar() {
 
   return (
     <>
-      {/* Spacer div that matches navbar height */}
-      <div style={{ height: navHeight }} />
+      {/* Spacer div using half the navbar height to reduce extra space */}
+      <div style={{ height: navHeight * 0.5 }} />
 
       <nav className="navbar">
         {/* Desktop Navigation */}

@@ -5,7 +5,6 @@ const crewData = [
         photo: "/assets/crew/jane-doe.jpg",
         name: "Jane Doe",
         role: "Project Manager",
-        bio: "Jane leads our teams with passion and strategic insight. She ensures every project meets its creative and technical goals.",
         social: {
             linkedin: "https://www.linkedin.com/in/janedoe",
             instagram: "https://www.instagram.com/janedoe",
@@ -19,7 +18,6 @@ const crewData = [
         photo: "/assets/crew/john-smith.jpg",
         name: "John Smith",
         role: "Lead Developer",
-        bio: "John is our go-to expert for all things code. He specializes in building scalable solutions and refining user experiences.",
         social: {
             linkedin: "https://www.linkedin.com/in/johnsmith",
             instagram: "",
@@ -33,7 +31,6 @@ const crewData = [
         photo: "/assets/crew/sara-lee.jpg",
         name: "Sara Lee",
         role: "UX/UI Designer",
-        bio: "Sara crafts intuitive and engaging interfaces that elevate our products. Her designs are both beautiful and functional.",
         social: {
             linkedin: "https://www.linkedin.com/in/saralee",
             instagram: "https://www.instagram.com/saralee",
