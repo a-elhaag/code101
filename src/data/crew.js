@@ -28,7 +28,7 @@ const crewData = [
         }
     },
     {
-        photo: "/assets/crew/sara-lee.jpg",
+        photo: "/crewPic/Ammar.jpg",
         name: "Ammar Elkholy",
         role: "Graphic Designer",
         social: {
