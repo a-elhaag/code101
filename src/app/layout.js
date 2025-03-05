@@ -32,10 +32,6 @@ export default function RootLayout({ children }) {
       <body style={{ margin: 0 }}>
         <Navbar />
 
-        {/* 
-          Give the main content enough padding to not hide behind
-          the fixed navbar (60px) and fixed footer (70px).
-        */}
         <main
           style={{
             minHeight: "100vh",
