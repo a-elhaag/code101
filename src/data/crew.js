@@ -2,42 +2,42 @@
 
 const crewData = [
     {
-        photo: "/assets/crew/jane-doe.jpg",
-        name: "Jane Doe",
-        role: "Project Manager",
+        photo: "/crewPic/Anas.jpeg",
+        name: "Anas Abuelhaag",
+        role: "Team Lead and Frontend Developer",
         social: {
-            linkedin: "https://www.linkedin.com/in/janedoe",
-            instagram: "https://www.instagram.com/janedoe",
-            facebook: "https://www.facebook.com/janedoe",
-            github: "https://github.com/janedoe",
-            medium: "https://medium.com/@janedoe",
-            website: "https://janedoe.com"
+            linkedin: "https://www.linkedin.com/in/anaselhaag",
+            instagram: "",
+            facebook: "",
+            github: "https://github.com/a-elhaag",
+            medium: "",
+            website: ""
         }
     },
     {
-        photo: "/assets/crew/john-smith.jpg",
-        name: "John Smith",
+        photo: "/crewPic/Nadeen.jpg",
+        name: "Nadeen Elkaluby",
         role: "Lead Developer",
         social: {
-            linkedin: "https://www.linkedin.com/in/johnsmith",
+            linkedin: "https://www.linkedin.com/in/nadeen-sherif-961921347",
             instagram: "",
-            facebook: "https://www.facebook.com/johnsmith",
-            github: "https://github.com/johnsmith",
+            facebook: "",
+            github: "",
             medium: "",
-            website: "https://johnsmith.dev"
+            website: ""
         }
     },
     {
         photo: "/assets/crew/sara-lee.jpg",
-        name: "Sara Lee",
-        role: "UX/UI Designer",
+        name: "Ammar Elkholy",
+        role: "Graphic Designer",
         social: {
-            linkedin: "https://www.linkedin.com/in/saralee",
-            instagram: "https://www.instagram.com/saralee",
+            linkedin: "https://www.linkedin.com/in/ammar-elkholy/",
+            instagram: "",
             facebook: "",
-            github: "",
-            medium: "https://medium.com/@saralee",
-            website: "https://saralee.design"
+            github: "https://github.com/Ammar-Elkholy",
+            medium: "",
+            website: ""
         }
     }
 ];
