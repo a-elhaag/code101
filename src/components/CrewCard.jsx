@@ -102,7 +102,8 @@ export default function CrewCard({ photo, name, role, bio, social }) {
           height: 450px; /* Fixed height */
           border-radius: 12px;
           padding: 1.5rem;
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          /* Always blue border */
+          border: 1px solid var(--color-blue);
           background-color: rgba(0, 0, 0, 0.5);
           color: var(--color-white);
           margin: 1rem;

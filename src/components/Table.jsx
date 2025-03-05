@@ -1,84 +1,84 @@
 "use client";
 import React, { useState, useRef, useEffect } from "react";
 
-const Table = () => {
-    // Track which row is being hovered and mouse position
-    const [hoveredRow, setHoveredRow] = useState(null);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const tableRef = useRef(null);
-    const rowRefs = useRef([]);
+const tableData = [
+  {
+    key: "what",
+    title: "What is Code101?",
+    description:
+      "Code101 is your open community hub to learn, build, and share coding projects in a friendly, collaborative environment."
+  },
+  {
+    key: "how",
+    title: "How do I contribute?",
+    description:
+      "You can contribute by sharing your projects, offering feedback, or submitting pull requests to help improve our community efforts."
+  },
+  {
+    key: "why",
+    title: "Why Code101?",
+    description:
+      "Because we believe collaboration and continuous learning drive innovation. Join us to level up your skills and make a real impact."
+  }
+];
 
-    // Initialize row refs
-    useEffect(() => {
-        rowRefs.current = rowRefs.current.slice(0, tableData.length);
-    }, []);
+export default function Table() {
+  // Track which row is being hovered and mouse position
+  const [hoveredRow, setHoveredRow] = useState(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const tableRef = useRef(null);
+  const rowRefs = useRef([]);
 
-    const tableData = [
-        {
-            key: "learn",
-            title: "Learn",
-            description: "Master coding fundamentals through interactive tutorials and hands-on exercises designed for all skill levels."
-        },
-        {
-            key: "build",
-            title: "Build",
-            description: "Create real-world projects that solve problems and demonstrate your growing technical capabilities."
-        },
-        {
-            key: "share",
-            title: "Share",
-            description: "Contribute to our community, showcase your work, and get feedback from fellow developers."
-        }
-    ];
+  // Initialize row refs based on tableData length
+  useEffect(() => {
+    rowRefs.current = rowRefs.current.slice(0, tableData.length);
+  }, []);
 
-    // Handle mouse movement to create dynamic highlight effect
-    const handleMouseMove = (e, rowKey) => {
-        if (hoveredRow === rowKey) {
-            const rowElement = rowRefs.current[tableData.findIndex(row => row.key === rowKey)];
-            if (rowElement) {
-                const rect = rowElement.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                setMousePos({ x, y });
-            }
-        }
-    };
+  // Handle mouse movement for dynamic highlight effect
+  const handleMouseMove = (e, rowKey) => {
+    if (hoveredRow === rowKey) {
+      const rowElement = rowRefs.current[tableData.findIndex((row) => row.key === rowKey)];
+      if (rowElement) {
+        const rect = rowElement.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        setMousePos({ x, y });
+      }
+    }
+  };
 
-    return (
-        <div className="table-container">
-            <div
-                className="table-wrapper"
-                ref={tableRef}
-            >
-                <table className="slogan-table">
-                    <tbody>
-                        {tableData.map((row, index) => (
-                            <tr
-                                key={row.key}
-                                ref={el => rowRefs.current[index] = el}
-                                onMouseEnter={() => setHoveredRow(row.key)}
-                                onMouseLeave={() => setHoveredRow(null)}
-                                onMouseMove={(e) => handleMouseMove(e, row.key)}
-                                className={`row-animate ${hoveredRow === row.key ? "hovered" : ""}`}
-                                style={{
-                                    "--delay": `${index * 0.1}s`,
-                                    "--mouse-x": `${mousePos.x}px`,
-                                    "--mouse-y": `${mousePos.y}px`
-                                }}
-                            >
-                                <td className="title-cell">
-                                    <span className="title-text">{row.title}</span>
-                                </td>
-                                <td className="desc-cell">
-                                    <div className="desc-content">{row.description}</div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+  return (
+    <div className="table-container">
+      <div className="table-wrapper" ref={tableRef}>
+        <table className="slogan-table">
+          <tbody>
+            {tableData.map((row, index) => (
+              <tr
+                key={row.key}
+                ref={(el) => (rowRefs.current[index] = el)}
+                onMouseEnter={() => setHoveredRow(row.key)}
+                onMouseLeave={() => setHoveredRow(null)}
+                onMouseMove={(e) => handleMouseMove(e, row.key)}
+                className={`row-animate ${hoveredRow === row.key ? "hovered" : ""}`}
+                style={{
+                  "--delay": `${index * 0.1}s`,
+                  "--mouse-x": `${mousePos.x}px`,
+                  "--mouse-y": `${mousePos.y}px`
+                }}
+              >
+                <td className="title-cell">
+                  <span className="title-text">{row.title}</span>
+                </td>
+                <td className="desc-cell">
+                  <div className="desc-content">{row.description}</div>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-            <style jsx>{`
+      <style jsx>{`
         .table-container {
           padding: 2rem;
           width: 100%;
@@ -106,7 +106,8 @@ const Table = () => {
         .slogan-table tr {
           position: relative;
           transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-          border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+          /* Changed divider between rows to blue if needed */
+          border-bottom: 1px solid rgba(0, 123, 255, 0.5);
         }
 
         .slogan-table tr:last-child {
@@ -138,23 +139,29 @@ const Table = () => {
         }
 
         .slogan-table tr.hovered::after {
-          content: '';
+          content: "";
           position: absolute;
           top: 0;
           left: 0;
           right: 0;
           bottom: 0;
-          background: linear-gradient(90deg, 
-            transparent 0%, 
+          background: linear-gradient(
+            90deg,
+            transparent 0%,
             rgba(255, 255, 255, 0.1) 50%,
-            transparent 100%);
+            transparent 100%
+          );
           background-size: 200% 100%;
           animation: shimmer 1.5s infinite;
         }
 
         @keyframes shimmer {
-          0% { background-position: -100% 0; }
-          100% { background-position: 100% 0; }
+          0% {
+            background-position: -100% 0;
+          }
+          100% {
+            background-position: 100% 0;
+          }
         }
 
         .slogan-table td {
@@ -163,6 +170,7 @@ const Table = () => {
           transition: all 0.3s ease;
         }
 
+        /* Title cell gets a right border that's always blue */
         .title-cell {
           font-family: var(--font-ibm-plex-mono);
           font-weight: 700;
@@ -172,6 +180,8 @@ const Table = () => {
           letter-spacing: 1px;
           position: relative;
           overflow: hidden;
+          border-right: 2px solid var(--color-blue);
+          padding-right: 1rem;
         }
 
         .title-text {
@@ -181,7 +191,7 @@ const Table = () => {
         }
 
         .title-text::after {
-          content: '';
+          content: "";
           position: absolute;
           bottom: -2px;
           left: 0;
@@ -206,6 +216,7 @@ const Table = () => {
           font-family: var(--font-roboto);
           font-size: 1.1rem;
           line-height: 1.5;
+          padding-left: 1rem;
         }
 
         .desc-content {
@@ -223,15 +234,15 @@ const Table = () => {
           .table-container {
             padding: 1.5rem;
           }
-          
+
           .title-cell {
             font-size: 1.2rem;
           }
-          
+
           .desc-cell {
             font-size: 0.95rem;
           }
-          
+
           .slogan-table td {
             padding: 1.2rem 1rem;
           }
@@ -242,21 +253,23 @@ const Table = () => {
           .table-container {
             padding: 1rem;
           }
-          
+
           .slogan-table tr {
             display: flex;
             flex-direction: column;
             padding: 1rem;
           }
-          
+
           .title-cell {
             width: 100%;
-            border-bottom: none;
+            border-right: none;
+            border-bottom: 2px solid var(--color-blue);
             padding-bottom: 0.5rem;
+            padding-right: 0;
           }
-          
+
           .desc-cell {
-            padding-top: 0;
+            padding-top: 0.5rem;
           }
 
           .row-animate {
@@ -271,8 +284,6 @@ const Table = () => {
           }
         }
       `}</style>
-        </div>
-    );
-};
-
-export default Table;
+    </div>
+  );
+}

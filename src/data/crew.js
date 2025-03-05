@@ -4,7 +4,7 @@ const crewData = [
     {
         photo: "/crewPic/Anas.jpeg",
         name: "Anas Abuelhaag",
-        role: "Team Lead and Frontend Developer",
+        role: "Lead & Frontend",
         social: {
             linkedin: "https://www.linkedin.com/in/anaselhaag",
             instagram: "",
@@ -17,7 +17,7 @@ const crewData = [
     {
         photo: "/crewPic/Nadeen.jpg",
         name: "Nadeen Elkaluby",
-        role: "Lead Developer",
+        role: "Marketing & Content",
         social: {
             linkedin: "https://www.linkedin.com/in/nadeen-sherif-961921347",
             instagram: "",
@@ -30,7 +30,7 @@ const crewData = [
     {
         photo: "/crewPic/Ammar.jpeg",
         name: "Ammar Elkholy",
-        role: "Graphic Designer",
+        role: "Graphics",
         social: {
             linkedin: "https://www.linkedin.com/in/ammar-elkholy/",
             instagram: "",
