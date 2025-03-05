@@ -28,7 +28,7 @@ const crewData = [
         }
     },
     {
-        photo: "/crewPic/Ammar.jpg",
+        photo: "/crewPic/Ammar.jpeg",
         name: "Ammar Elkholy",
         role: "Graphic Designer",
         social: {

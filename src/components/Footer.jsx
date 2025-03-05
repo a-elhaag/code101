@@ -6,14 +6,14 @@ import { FaTwitter, FaGithub, FaLinkedin, FaInstagram, FaMedium, FaYoutube, FaFa
 export default function Footer({
   iconSrc = "/code101-logo.svg",
   socialLinks = {
-    twitter: "https://twitter.com/your-handle",
-    github: "https://github.com/your-profile",
-    linkedin: "https://linkedin.com/in/your-profile",
-    instagram: "https://instagram.com/your-profile",
-    medium: "https://medium.com/@your-profile",
+    twitter: "",
+    github: "",
+    linkedin: "https://www.linkedin.com/company/code101xyz/",
+    instagram: "https://www.instagram.com/code_101?igsh=a2ptdDlmOHloajR1",
+    medium: "",
     youtube: "",
     facebook: "",
-    website: "https://yourwebsite.com",
+    website: "",
   },
 }) {
   // Filter out empty links
