@@ -3,9 +3,13 @@ import ProjectCard from '@/components/ProjectCard';
 import { getApprovedProjects } from '@/lib/notion';
 import styles from './page.module.css';
 
+// Set dynamic rendering options for this route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0; // Revalidate this data on every request
+
 // This is a server component
 export default async function ProjectsPage() {
-    // Fetch approved projects
+    // Fetch approved projects (will run at request time, not build time)
     const projects = await getApprovedProjects();
 
     return (

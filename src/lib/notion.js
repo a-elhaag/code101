@@ -9,6 +9,7 @@ const databaseId = process.env.NOTION_DATABASE_ID;
 
 /**
  * Fetches approved projects from the Notion database
+ * with dynamic revalidation
  */
 export async function getApprovedProjects() {
     try {
