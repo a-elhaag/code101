@@ -53,7 +53,7 @@ export default function NotFound() {
                 <div className="underline"></div>
                 <h2 className="error-message">Page Not Found</h2>
                 <p className="error-description">
-                    The page you are looking for doesn't exist or has been moved.
+                    The page you are looking for doesn&apos;t exist or has been moved.
                 </p>
                 <div className="action-buttons">
                     <Button
