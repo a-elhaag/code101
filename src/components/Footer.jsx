@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import Link from "next/link";
-import { FaTwitter, FaGithub, FaLinkedin, FaInstagram, FaMedium, FaYoutube, FaFacebook, FaGlobe } from "react-icons/fa";
+import { FaTwitter, FaGithub, FaLinkedin, FaInstagram, FaMedium, FaYoutube, FaFacebook, FaGlobe, FaEnvelope } from "react-icons/fa";
 
 export default function Footer({
   iconSrc = "/code101-logo.svg",
@@ -54,12 +54,21 @@ export default function Footer({
               {socialIcons[platform]}
             </a>
           ))}
+          <a
+            href="mailto:contact@code101.xyz"
+            className="social-link"
+          >
+            <FaEnvelope />
+          </a>
         </div>
 
         {/* Right: Legal Links */}
         <div className="footer-right">
           <a className="footer-link">
             &copy; 2025 Code101
+          </a>
+          <a href="mailto:contact@code101.xyz" className="footer-link">
+            contact@code101.xyz
           </a>
         </div>
       </div>
@@ -113,6 +122,7 @@ export default function Footer({
           justify-content: flex-end;
           align-items: center;
           gap: 1.5rem;
+          flex-wrap: wrap;
         }
 
         .social-link {
