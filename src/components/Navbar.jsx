@@ -2,6 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import ThemeToggle from "./ThemeToggle";
 
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +24,7 @@ export default function Navbar() {
     textDecoration: "none",
     padding: "0.5rem 1rem",
     transition: "color 0.2s ease, opacity 0.2s ease",
-    color: pathname === href ? "var(--color-blue)" : "var(--color-white)",
+    color: pathname === href ? "var(--color-blue)" : "var(--foreground)",
   });
 
   return (
@@ -49,6 +50,11 @@ export default function Navbar() {
           <Link href="/crew" style={getLinkStyle("/crew")}>
             Meet the Crew
           </Link>
+        </div>
+
+        {/* Theme Toggle */}
+        <div className="theme-toggle-container">
+          <ThemeToggle />
         </div>
 
         {/* Mobile Menu Button */}
@@ -93,6 +99,9 @@ export default function Navbar() {
           >
             Meet the Crew
           </Link>
+          <div className="mobile-theme-toggle">
+            <ThemeToggle />
+          </div>
         </div>
 
         <style jsx>{`
@@ -101,30 +110,38 @@ export default function Navbar() {
             top: 0;
             left: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.9);
+            background-color: var(--card-bg);
             backdrop-filter: blur(10px);
-            color: var(--color-white);
+            color: var(--foreground);
             padding: 1.5rem 0;
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            box-shadow: var(--shadow-sm);
+            transition: var(--theme-transition);
           }
 
           .desktop-links {
             display: flex;
             gap: 1.5rem;
           }
+          
+          .theme-toggle-container {
+            position: absolute;
+            right: 6rem;
+          }
 
           .mobile-button {
             background: none;
             border: none;
-            color: var(--color-white);
+            color: var(--foreground);
             font-size: 2rem;
             cursor: pointer;
             display: none;
             transition: transform 0.5s ease-in-out;
+            position: absolute;
+            right: 2rem;
           }
 
           .mobile-button.open {
@@ -136,34 +153,43 @@ export default function Navbar() {
             top: -350px;
             left: 0;
             width: 100%;
-            background-color: rgba(0, 0, 0, 0.95);
+            background-color: var(--card-bg);
             padding: 1rem 0;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
             transition: top 0.5s ease-in-out;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+            box-shadow: var(--shadow-md);
           }
 
           .mobile-menu.open {
             top: 100%;
           }
+          
+          .mobile-theme-toggle {
+            margin-top: 1rem;
+            display: none;
+          }
 
           @media (max-width: 767px) {
-            .desktop-links {
+            .desktop-links, .theme-toggle-container {
               display: none;
             }
 
             .mobile-button {
               display: block;
-              position: absolute;
-              right: 2rem;
             }
 
             .mobile-menu a {
               font-size: 1.6rem;
               padding: 1rem 0;
+            }
+            
+            .mobile-theme-toggle {
+              display: flex;
+              justify-content: center;
+              margin-bottom: 0.5rem;
             }
           }
         `}</style>

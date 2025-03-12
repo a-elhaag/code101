@@ -2,15 +2,23 @@
 import React from "react";
 import CrewCard from "@/components/CrewCard";
 import crewData from "@/data/crew";
+import NetworkBackground from "@/components/NetworkBackground";
 
 export default function MeetTheCrew() {
   return (
-    <div className="crew-page">
-      <h1 className="page-heading">Meet the Crew</h1>
-      <div className="crew-grid">
-        {crewData.map((member, index) => (
-          <CrewCard key={index} {...member} />
-        ))}
+    <>
+      {/* Add the network background */}
+      <NetworkBackground color="#007bff" density={10} speed={0.5} />
+
+      <div className="crew-page">
+        <h1 className="page-heading">Meet the Crew</h1>
+        <div className="crew-grid">
+          {crewData.map((member, index) => (
+            <CrewCard key={index} {...member} />
+          ))}
+        </div>
+
+        {/* Remove background elements */}
       </div>
 
       <style jsx>{`
@@ -21,8 +29,10 @@ export default function MeetTheCrew() {
           justify-content: center;
           padding: 2rem;
           min-height: 100vh;
-          background-color: var(--background-dark);
+          position: relative;
+          overflow: hidden;
         }
+        
         .crew-grid {
           display: flex;
           flex-wrap: wrap;
@@ -31,8 +41,12 @@ export default function MeetTheCrew() {
           align-items: center;
           width: 100%;
           max-width: 1200px;
+          position: relative;
+          z-index: 1;
         }
+
+        /* Remove background element styles */
       `}</style>
-    </div>
+    </>
   );
 }

@@ -2,28 +2,28 @@
 import React, { useState, useRef } from "react";
 
 export default function Input({ label, placeholder, value, onChange }) {
-    const [isFocused, setIsFocused] = useState(false);
-    const [isHovered, setIsHovered] = useState(false);
-    const inputRef = useRef(null);
+  const [isFocused, setIsFocused] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
+  const inputRef = useRef(null);
 
-    return (
-        <div 
-            className={`input-container ${isFocused ? "focused" : ""} ${isHovered ? "hovered" : ""}`}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-        >
-            {label && <label className="input-label">{label}</label>}
-            <input
-                ref={inputRef}
-                className="styled-input"
-                placeholder={placeholder}
-                value={value}
-                onChange={onChange}
-                onFocus={() => setIsFocused(true)}
-                onBlur={() => setIsFocused(false)}
-            />
+  return (
+    <div
+      className={`input-container ${isFocused ? "focused" : ""} ${isHovered ? "hovered" : ""}`}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+    >
+      {label && <label className="input-label">{label}</label>}
+      <input
+        ref={inputRef}
+        className="styled-input"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
+      />
 
-            <style jsx>{`
+      <style jsx>{`
         .input-container {
           width: 100%;
           max-width: 400px;
@@ -47,7 +47,7 @@ export default function Input({ label, placeholder, value, onChange }) {
         .input-label {
           font-family: var(--font-ibm-plex-mono);
           font-size: 1.1rem;
-          color: var(--color-white);
+          color: var(--foreground);
           margin-bottom: 0.5rem;
           position: relative;
           display: inline-block;
@@ -85,19 +85,19 @@ export default function Input({ label, placeholder, value, onChange }) {
           font-family: var(--font-roboto);
           font-size: 1rem;
           padding: 0.8rem 1rem;
-          border: 1px solid rgba(255, 255, 255, 0.2);
+          border: 1px solid var(--input-border);
           border-radius: 8px;
-          background-color: rgba(0, 0, 0, 0.5);
-          color: var(--color-white);
+          background-color: var(--input-bg);
+          color: var(--foreground);
           outline: none;
           transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
           position: relative;
         }
         
         .input-container.hovered .styled-input {
-          border-color: rgba(0, 120, 255, 0.5);
+          border-color: var(--color-blue-light);
           box-shadow: 0 0 15px rgba(0, 120, 255, 0.1);
-          background-color: rgba(0, 20, 40, 0.4);
+          background-color: var(--input-bg);
         }
         
         .styled-input:focus {
@@ -133,14 +133,15 @@ export default function Input({ label, placeholder, value, onChange }) {
         }
         
         ::placeholder {
-          color: rgba(255, 255, 255, 0.6);
+          color: var(--text-gray);
           transition: color 0.3s ease;
         }
         
         .input-container.hovered ::placeholder {
-          color: rgba(255, 255, 255, 0.8);
+          color: var(--foreground);
+          opacity: 0.7;
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

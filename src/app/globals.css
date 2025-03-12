@@ -1,23 +1,78 @@
 /* Define color variables */
 :root {
-  --color-white: #ffffff;
-  --color-black: #000000;
-  --color-gray: #737373;
+  /* Base colors that don't change between themes */
   --color-blue: #007bff;
+  --color-blue-light: #4dabff;
+  --color-blue-dark: #0062cc;
 
+  /* Font families */
   --font-roboto: "Roboto", sans-serif;
   --font-ibm-plex-mono: "IBM Plex Mono", monospace;
 
+  /* Default theme (dark) */
+  --color-black: #000000;
+  --color-white: #ffffff;
+  --color-gray: #737373;
+
+  /* Dark theme variables */
   --background: var(--color-black);
   --foreground: var(--color-white);
+  --card-bg: rgba(0, 0, 0, 0.85);
+  --card-border: rgba(255, 255, 255, 0.1);
+  --input-bg: rgba(0, 0, 0, 0.7);
+  --input-border: rgba(255, 255, 255, 0.2);
+  --tooltip-bg: rgba(0, 0, 0, 0.8);
+  --footer-bg: var(--color-black);
+  --scrollbar-track: rgba(0, 0, 0, 0.3);
+  --scrollbar-thumb: rgba(255, 255, 255, 0.2);
+  --scrollbar-thumb-hover: rgba(255, 255, 255, 0.3);
+  --text-gray: #a0a0a0;
+
+  /* Box shadows */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.4);
+
+  /* Gradients */
+  --gradient-bg: linear-gradient(135deg, #000000, #0d0d0d);
+  --gradient-text: linear-gradient(135deg, #4dabff, #007bff);
+
+  /* Transitions */
+  --theme-transition: background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease,
+    box-shadow 0.3s ease;
 }
 
-/* Dark mode styles */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: var(--color-black);
-    --foreground: var(--color-white);
-  }
+/* Light theme */
+[data-theme="light"] {
+  /* Primary colors */
+  --color-black: #121212;
+  --color-white: #ffffff;
+  --color-gray: #737373;
+
+  /* Light theme variables */
+  --background: var(--color-white);
+  --foreground: var(--color-black);
+  --card-bg: rgba(255, 255, 255, 0.95);
+  --card-border: rgba(0, 0, 0, 0.1);
+  --input-bg: rgba(255, 255, 255, 0.95);
+  --input-border: rgba(0, 0, 0, 0.1);
+  --tooltip-bg: rgba(255, 255, 255, 0.9);
+  --footer-bg: var(--color-white);
+  --scrollbar-track: rgba(0, 0, 0, 0.05);
+  --scrollbar-thumb: rgba(0, 0, 0, 0.2);
+  --scrollbar-thumb-hover: rgba(0, 0, 0, 0.3);
+  --text-gray: #707070;
+
+  /* Box shadows for light mode */
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 8px 24px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 12px 32px rgba(0, 0, 0, 0.15);
+
+  /* Gradients for light mode */
+  --gradient-bg: linear-gradient(135deg, #ffffff, #f8f8f8);
+  --gradient-text: linear-gradient(135deg, #0062cc, #007bff);
 }
 
 /* Global styles */
@@ -30,6 +85,7 @@ body {
   font-family: var(--font-roboto);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: var(--theme-transition);
 }
 
 /* Headings use IBM Plex Mono */
@@ -70,10 +126,55 @@ button {
   }
 }
 
+/* Custom scrollbar styling */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 6px;
+  border: 3px solid var(--scrollbar-track);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--scrollbar-thumb-hover);
+}
+
+/* Firefox */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+/* Focus states - update these rules */
+:focus {
+  /* Remove the default focus outline when clicking with mouse */
+  outline: none;
+}
+
+/* Only show focus outlines for keyboard navigation */
+:focus-visible {
+  outline: 2px solid var(--color-blue);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.25);
+}
+
 .page-heading {
   font-family: var(--font-ibm-plex-mono);
   font-size: 2.5rem;
   color: var(--color-blue);
   margin-bottom: 2rem;
   text-align: center;
+}
+
+/* Add styles for content sections to ensure proper layering with the background */
+.content-section {
+  position: relative;
+  z-index: 1;
+  background-color: transparent;
 }

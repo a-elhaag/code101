@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import { getApprovedProjects } from '@/lib/notion';
 
-export const revalidate = 0; // Never cache this route
+// Use number instead of function
+export const revalidate = 0;
 
 export async function GET() {
     try {

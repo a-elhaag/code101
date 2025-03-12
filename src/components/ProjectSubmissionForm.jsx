@@ -121,13 +121,14 @@ export default function ProjectSubmissionForm() {
           max-width: 600px;
           margin: 2rem auto;
           padding: 2rem;
-          background-color: rgba(0, 0, 0, 0.5);
+          background-color: var(--card-bg);
           border-radius: 12px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          border: 1px solid var(--card-border);
+          box-shadow: var(--shadow-md);
           display: flex;
           flex-direction: column;
           gap: 1rem;
-          color: var(--color-white);
+          color: var(--foreground);
           font-family: var(--font-roboto);
         }
         .form-field {
@@ -150,7 +151,7 @@ export default function ProjectSubmissionForm() {
           transition: background-color 0.3s ease;
         }
         button:hover {
-          background-color: rgba(0, 120, 255, 0.8);
+          background-color: var(--color-blue-light);
         }
         .feedback {
           text-align: center;
@@ -159,12 +160,14 @@ export default function ProjectSubmissionForm() {
           border-radius: 6px;
         }
         .feedback.success {
-          background-color: rgba(0, 0, 255, 0.1);
+          background-color: rgba(0, 120, 255, 0.1);
           color: var(--color-blue);
+          border: 1px solid var(--color-blue-light);
         }
         .feedback.error {
           background-color: rgba(255, 0, 0, 0.1);
           color: #ff5555;
+          border: 1px solid rgba(255, 0, 0, 0.2);
         }
       `}</style>
     </form>

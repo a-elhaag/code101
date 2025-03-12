@@ -2,157 +2,160 @@
 import React, { useState, useRef, useEffect } from "react";
 
 const faqData = [
-    {
-        question: "What is Code101?",
-        answer:
-            "Code101 is a platform to discover, learn, and share open-source projects with an amazing community."
-    },
-    {
-        question: "How can I contribute?",
-        answer:
-            "You can contribute by submitting pull requests, filing issues, or creating new projects and linking them here!"
-    },
-    {
-        question: "Is Code101 free to use?",
-        answer:
-            "Absolutely! Code101 is open-source and free for everyone to explore and collaborate."
-    },
-    {
-        question: "Why use Code101?",
-        answer:
-            "It's a vibrant community where you can level up your skills, collaborate with peers, and showcase your projects."
-    }
+  {
+    question: "What is Code101?",
+    answer:
+      "Code101 is a platform to discover, learn, and share open-source projects with an amazing community."
+  },
+  {
+    question: "How can I contribute?",
+    answer:
+      "You can contribute by submitting pull requests, filing issues, or creating new projects and linking them here!"
+  },
+  {
+    question: "Is Code101 free to use?",
+    answer:
+      "Absolutely! Code101 is open-source and free for everyone to explore and collaborate."
+  },
+  {
+    question: "Why use Code101?",
+    answer:
+      "It's a vibrant community where you can level up your skills, collaborate with peers, and showcase your projects."
+  }
 ];
 
 export default function FAQ() {
-    const [activeIndex, setActiveIndex] = useState(null);
-    const faqRef = useRef(null);
-    const [isVisible, setIsVisible] = useState(false);
-    const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-    const [hoveredItem, setHoveredItem] = useState(null);
+  const [activeIndex, setActiveIndex] = useState(null);
+  const faqRef = useRef(null);
+  const [isVisible, setIsVisible] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [hoveredItem, setHoveredItem] = useState(null);
 
-    // Intersection observer for scroll reveal
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting) {
-                    setIsVisible(true);
-                    observer.unobserve(entry.target);
-                }
-            },
-            { threshold: 0.1 }
-        );
-
-        if (faqRef.current) {
-            observer.observe(faqRef.current);
+  // Intersection observer for scroll reveal
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
         }
+      },
+      { threshold: 0.1 }
+    );
 
-        return () => {
-            if (faqRef.current) {
-                observer.unobserve(faqRef.current);
-            }
-        };
-    }, []);
+    if (faqRef.current) {
+      observer.observe(faqRef.current);
+    }
 
-    const handleToggle = (index) => {
-        setActiveIndex((prev) => (prev === index ? null : index));
+    return () => {
+      if (faqRef.current) {
+        observer.unobserve(faqRef.current);
+      }
     };
+  }, []);
 
-    // Track mouse position for highlight effect
-    const handleMouseMove = (e, index) => {
-        if (hoveredItem === index) {
-            const item = document.getElementById(`faq-item-${index}`);
-            if (item) {
-                const rect = item.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                setMousePos({ x, y });
-            }
-        }
-    };
+  const handleToggle = (index) => {
+    setActiveIndex((prev) => (prev === index ? null : index));
+  };
 
-    return (
-        <div ref={faqRef} className={`faq-container ${isVisible ? "visible" : ""}`}>
-            <h2 className="faq-heading">Frequently Asked Questions</h2>
+  // Track mouse position for highlight effect
+  const handleMouseMove = (e, index) => {
+    if (hoveredItem === index) {
+      const item = document.getElementById(`faq-item-${index}`);
+      if (item) {
+        const rect = item.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        setMousePos({ x, y });
+      }
+    }
+  };
 
-            <div className="faq-items">
-                {faqData.map((item, index) => {
-                    const isOpen = index === activeIndex;
-                    const isHovered = index === hoveredItem;
-                    return (
-                        <div
-                            id={`faq-item-${index}`}
-                            key={index}
-                            className={`faq-item ${isOpen ? "open" : ""} ${isHovered ? "hovered" : ""}`}
-                            style={{ 
-                                "--delay": `${index * 0.1 + 0.2}s`,
-                                "--mouse-x": `${mousePos.x}px`,
-                                "--mouse-y": `${mousePos.y}px`
-                            }}
-                            onMouseEnter={() => setHoveredItem(index)}
-                            onMouseLeave={() => setHoveredItem(null)}
-                            onMouseMove={(e) => handleMouseMove(e, index)}
-                        >
-                            <button
-                                className="faq-question"
-                                onClick={() => handleToggle(index)}
-                                aria-expanded={isOpen}
-                            >
-                                <span className="question-text">{item.question}</span>
-                                <span className="icon">
-                                    <svg
-                                        width="16"
-                                        height="16"
-                                        viewBox="0 0 16 16"
-                                        fill="none"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                    >
-                                        <line
-                                            x1="2"
-                                            y1="8"
-                                            x2="14"
-                                            y2="8"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                        />
-                                        <line
-                                            className="vertical"
-                                            x1="8"
-                                            y1="2"
-                                            x2="8"
-                                            y2="14"
-                                            stroke="currentColor"
-                                            strokeWidth="2"
-                                            strokeLinecap="round"
-                                        />
-                                    </svg>
-                                </span>
-                            </button>
-                            <div className="faq-answer-wrapper" style={{
-                                height: isOpen ? `${item.answer.length * 0.5 + 40}px` : "0px"
-                            }}>
-                                <div className="faq-answer">{item.answer}</div>
-                            </div>
-                        </div>
-                    );
-                })}
+  return (
+    <div
+      ref={faqRef}
+      className={`faq-container ${isVisible ? "visible" : ""}`}
+    >
+      <h2 className="faq-heading">Frequently Asked Questions</h2>
+
+      <div className="faq-items">
+        {faqData.map((item, index) => {
+          const isOpen = index === activeIndex;
+          const isHovered = index === hoveredItem;
+          return (
+            <div
+              id={`faq-item-${index}`}
+              key={index}
+              className={`faq-item ${isOpen ? "open" : ""} ${isHovered ? "hovered" : ""}`}
+              style={{
+                "--delay": `${index * 0.1 + 0.2}s`,
+                "--mouse-x": `${mousePos.x}px`,
+                "--mouse-y": `${mousePos.y}px`
+              }}
+              onMouseEnter={() => setHoveredItem(index)}
+              onMouseLeave={() => setHoveredItem(null)}
+              onMouseMove={(e) => handleMouseMove(e, index)}
+            >
+              <button
+                className="faq-question"
+                onClick={() => handleToggle(index)}
+                aria-expanded={isOpen}
+              >
+                <span className="question-text">{item.question}</span>
+                <span className="icon">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <line
+                      x1="2"
+                      y1="8"
+                      x2="14"
+                      y2="8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <line
+                      className="vertical"
+                      x1="8"
+                      y1="2"
+                      x2="8"
+                      y2="14"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <div className="faq-answer-wrapper" style={{
+                height: isOpen ? `${item.answer.length * 0.5 + 40}px` : "0px"
+              }}>
+                <div className="faq-answer">{item.answer}</div>
+              </div>
             </div>
+          );
+        })}
+      </div>
 
-            <style jsx>{`
+      <style jsx>{`
         .faq-container {
           width: 100%;
           max-width: 900px;
           margin: 3rem auto;
           padding: 2rem;
-          background-color: rgba(0, 0, 0, 0.5);
+          background-color: var(--card-bg); /* Use theme variable instead of rgba(0, 0, 0, 0.5) */
           border-radius: 16px;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+          box-shadow: var(--shadow-md); /* Use theme variable */
           backdrop-filter: blur(10px);
           opacity: 0;
           transform: translateY(20px);
           transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-          border: 1px solid rgba(255, 255, 255, 0.1);
+          border: 1px solid var(--card-border); /* Use theme variable */
         }
 
         .faq-container.visible {
@@ -165,7 +168,7 @@ export default function FAQ() {
           font-size: 2rem;
           margin-bottom: 2.5rem;
           text-align: center;
-          color: var(--color-white);
+          color: var(--foreground); /* Use theme variable instead of var(--color-white) */
           position: relative;
           padding-bottom: 0.5rem;
         }
@@ -193,10 +196,10 @@ export default function FAQ() {
         }
 
         .faq-item {
-          background: rgba(0, 0, 0, 0.3);
+          background: var(--card-bg); /* Use theme variable instead of rgba(0, 0, 0, 0.3) */
           border-radius: 8px;
           overflow: hidden;
-          border: 1px solid rgba(255, 255, 255, 0.05);
+          border: 1px solid var(--card-border); /* Use theme variable */
           transition: all 0.3s ease;
           opacity: 0;
           transform: translateY(10px);
@@ -214,8 +217,8 @@ export default function FAQ() {
         }
 
         .faq-item.open {
-          background: rgba(0, 0, 0, 0.4);
-          box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+          background: var(--card-bg); /* Use theme variable */
+          box-shadow: var(--shadow-sm); /* Use theme variable */
         }
 
         /* Hover effect matching the ProjectCard and Table components */
@@ -225,7 +228,7 @@ export default function FAQ() {
             var(--color-blue) 0%,
             rgba(0, 120, 255, 0.4) 40%,
             transparent 80%
-          ) rgba(0, 0, 0, 0.4);
+          ) var(--card-bg); /* Use theme variable */
           box-shadow: 0 0 30px rgba(0, 120, 255, 0.3) inset;
         }
 
@@ -260,7 +263,7 @@ export default function FAQ() {
           font-family: var(--font-ibm-plex-mono);
           font-size: 1.1rem;
           font-weight: 500;
-          color: var(--color-white);
+          color: var(--foreground); /* Use theme variable instead of var(--color-white) */
           background: none;
           border: none;
           padding: 1.2rem;
@@ -344,10 +347,11 @@ export default function FAQ() {
         .faq-answer {
           font-family: var(--font-roboto);
           font-size: 1rem;
-          color: rgba(255, 255, 255, 0.85);
+          color: var(--foreground); /* Use theme variable instead of rgba(255, 255, 255, 0.85) */
+          opacity: 0.85; /* Keep some opacity for subdued effect */
           line-height: 1.6;
           padding: 0 1.2rem 1.2rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.05);
+          border-top: 1px solid var(--card-border); /* Use theme variable */
           transition: transform 0.3s ease, opacity 0.3s ease;
         }
         
@@ -400,6 +404,6 @@ export default function FAQ() {
           }
         }
       `}</style>
-        </div>
-    );
+    </div>
+  );
 }

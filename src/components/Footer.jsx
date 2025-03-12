@@ -1,10 +1,9 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
 import { FaTwitter, FaGithub, FaLinkedin, FaInstagram, FaMedium, FaYoutube, FaFacebook, FaGlobe, FaEnvelope } from "react-icons/fa";
 
 export default function Footer({
-  iconSrc = "/code101-logo.svg",
   socialLinks = {
     twitter: "",
     github: "",
@@ -16,12 +15,34 @@ export default function Footer({
     website: "",
   },
 }) {
+  const [currentTheme, setCurrentTheme] = useState('dark'); // Default to match CSS
+  const [mounted, setMounted] = useState(false);
+
+  // Only run after hydration is complete to avoid mismatch
+  useEffect(() => {
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    setCurrentTheme(theme);
+    setMounted(true);
+
+    // Listen for theme changes
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.attributeName === 'data-theme') {
+          setCurrentTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
+
   // Filter out empty links
   const availableSocialLinks = Object.entries(socialLinks).filter(
     ([, url]) => url && url.trim() !== ""
   );
 
-  // Map each platform to a React Icon - added FaGlobe for website
+  // Map each platform to a React Icon
   const socialIcons = {
     twitter: <FaTwitter />,
     github: <FaGithub />,
@@ -33,12 +54,16 @@ export default function Footer({
     website: <FaGlobe />,
   };
 
+  // Default logo path for server rendering to match client
+  const logoSrc = mounted ?
+    (currentTheme === 'light' ? "/logoLightMode.svg" : "/logo.svg") :
+    "/logo.svg";
+
   return (
     <footer className="footer">
       <div className="footer-content">
-
         <div className="footer-left">
-          <img src="/logo.svg" alt="Code101 Logo" className="footer-logo" />
+          <img src={logoSrc} alt="Code101 Logo" className="footer-logo" />
         </div>
 
         {/* Center: Social Media Icons */}
@@ -76,8 +101,8 @@ export default function Footer({
       <style jsx>{`
         .footer {
           width: 100%;
-          background: #000;
-          color: var(--color-white);
+          background: var(--footer-bg);
+          color: var(--foreground);
           padding: 3rem;
           display: flex;
           justify-content: center;
@@ -85,7 +110,7 @@ export default function Footer({
           animation: fadeIn 1s ease-out;
           border-top-left-radius: 20px;
           border-top-right-radius: 20px;
-          box-shadow: 0 0 25px rgba(0, 0, 0, 0.7);
+          box-shadow: 0 0 25px rgba(0, 0, 0, 0.1);
         }
 
         .footer-content {
@@ -132,9 +157,10 @@ export default function Footer({
           width: 40px;
           height: 40px;
           border-radius: 50%;
-          background-color: rgba(255, 255, 255, 0.1);
+          background-color: rgba(0, 0, 0, 0.1);
           transition: background-color 0.3s ease, transform 0.3s ease;
           font-size: 1.8rem;
+          color: var(--foreground);
         }
 
         .social-link:hover {
@@ -147,7 +173,7 @@ export default function Footer({
           font-family: var(--font-ibm-plex-mono);
           font-size: 1.1rem;
           text-decoration: none;
-          color: var(--color-white);
+          color: var(--foreground);
           transition: color 0.3s ease, border-bottom 0.3s ease;
           border-bottom: 1px solid transparent;
         }

@@ -10,7 +10,7 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
         borderRadius: "6px",
         transition: "all 0.3s ease",
         cursor: "pointer",
-        fontFamily: "var(--font-ibm-plex-mono)", 
+        fontFamily: "var(--font-ibm-plex-mono)",
     };
 
     // Size variants
@@ -41,7 +41,7 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
 
     // Hover styles for each color
     const hoverStyles = {
-        black: { backgroundColor: "var(--color-gray)" }, // black → gray
+        black: { backgroundColor: "var(--color-blue-dark)" }, // Changed from gray to blue-dark
         white: { opacity: "0.5" }, // slightly fade
         blue: { opacity: "0.8" },  // slightly fade
     };

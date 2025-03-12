@@ -9,6 +9,8 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
   const [isVisible, setIsVisible] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const descriptionRef = useRef(null);
+  const [currentTheme, setCurrentTheme] = useState('dark');
+  const [mounted, setMounted] = useState(false);
 
   // Track mouse position for the radial gradient
   const handleMouseMove = (e) => {
@@ -51,6 +53,22 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
     };
   }, []);
 
+  // Detect theme for button color inversion
+  useEffect(() => {
+    setMounted(true);
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    setCurrentTheme(theme);
+
+    // Listen for theme changes
+    const observer = new MutationObserver(() => {
+      const newTheme = document.documentElement.getAttribute('data-theme') || 'dark';
+      setCurrentTheme(newTheme);
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div
       ref={cardRef}
@@ -75,9 +93,10 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
       </div>
 
       <div className="card-action">
+        {/* Invert button color based on theme */}
         <Button
           size="md"
-          color="white"
+          color={mounted && currentTheme === 'light' ? "black" : "white"}
           onClick={() => {
             if (repoLink) window.open(repoLink, "_blank");
           }}
@@ -92,10 +111,9 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
           height: 400px;
           border-radius: 12px;
           padding: 1.5rem;
-          /* Always blue border */
           border: 1px solid var(--color-blue);
-          background-color: rgba(0, 0, 0, 0.5);
-          color: var(--color-white);
+          background-color: var(--card-bg);
+          color: var(--foreground);
           margin: 1rem;
           display: flex;
           flex-direction: column;
@@ -104,12 +122,12 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
           position: relative;
           overflow: hidden;
           backdrop-filter: blur(5px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          box-shadow: var(--shadow-md);
           cursor: pointer;
           opacity: 0;
           transform: translateY(10px);
           animation: fadeIn 0.6s forwards;
-          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: var(--theme-transition), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
         .project-card.visible {
           opacity: 1;
@@ -121,15 +139,15 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
             transform: translateY(0);
           }
         }
-        /* Hover effect to mimic the table's radial gradient & box-shadow highlight */
+        /* Hover effect with theme-aware colors */
         .project-card.hovered {
           background: radial-gradient(
               circle 80px at var(--mouse-x) var(--mouse-y),
               var(--color-blue) 0%,
               rgba(0, 120, 255, 0.4) 40%,
               transparent 80%
-            )
-            rgba(0, 0, 0, 0.5);
+            ),
+            var(--card-bg);
           box-shadow: 0 0 30px rgba(0, 120, 255, 0.3) inset;
         }
         .project-card.hovered::after {
@@ -206,6 +224,7 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          color: var(--text-gray);
         }
         .description-container {
           position: relative;
@@ -222,13 +241,19 @@ export default function ProjectCard({ title, owner, description, repoLink }) {
           height: 100%;
           overflow: hidden;
         }
+        /* Description gradient fix for light/dark theme */
         .ellipsis {
           position: absolute;
           bottom: 0;
           right: 0;
           color: var(--color-blue);
           font-weight: bold;
-          background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.7) 30%, rgba(0, 0, 0, 0.8) 50%);
+          background: linear-gradient(
+            to right, 
+            transparent, 
+            var(--card-bg) 30%, 
+            var(--card-bg) 50%
+          );
           padding: 0 4px 0 20px;
         }
         /* Centering the button */

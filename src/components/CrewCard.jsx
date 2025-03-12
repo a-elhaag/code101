@@ -10,15 +10,14 @@ export default function CrewCard({ photo, name, role, bio, social }) {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const cardRef = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [currentTheme, setCurrentTheme] = useState('dark');
+  const [mounted, setMounted] = useState(false);
 
   // Track mouse position for the radial gradient highlight
   const handleMouseMove = (e) => {
-    if (cardRef.current) {
-      const rect = cardRef.current.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      setMousePos({ x, y });
-    }
+    if (!cardRef.current) return;
+    const rect = cardRef.current.getBoundingClientRect();
+    setMousePos({ x: e.clientX - rect.left, y: e.clientY - rect.top });
   };
 
   // Intersection Observer to fade in when the card becomes visible
@@ -38,10 +37,23 @@ export default function CrewCard({ photo, name, role, bio, social }) {
     }
 
     return () => {
-      if (cardRef.current) {
-        observer.unobserve(cardRef.current);
-      }
+      observer.disconnect();
     };
+  }, []);
+
+  // Detect theme for social icon colors
+  useEffect(() => {
+    setMounted(true);
+    const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+    setCurrentTheme(theme);
+
+    const observer = new MutationObserver(() => {
+      setCurrentTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+    });
+
+    observer.observe(document.documentElement, { attributes: true });
+
+    return () => observer.disconnect();
   }, []);
 
   // Define social icons mapping matching the footer style
@@ -68,20 +80,21 @@ export default function CrewCard({ photo, name, role, bio, social }) {
         "--mouse-y": `${mousePos.y}px`,
       }}
     >
-      <div className="photo-container">
-        <img src={photo} alt={name} className="profile-photo" />
-      </div>
-
       <div className="card-content">
+        <div className="photo-container">
+          <img src={photo} alt={name} className="profile-photo" />
+        </div>
         <h2 className="card-title">{name}</h2>
         <p className="card-role">{role}</p>
+        {bio && <p className="card-bio">{bio}</p>}
       </div>
 
       <div className="card-footer">
         {social &&
           Object.keys(social).map((key) => {
             const link = social[key];
-            if (!link) return null;
+            const Icon = socialIcons[key] || null;
+            if (!link || !Icon) return null;
             return (
               <a
                 key={key}
@@ -90,7 +103,7 @@ export default function CrewCard({ photo, name, role, bio, social }) {
                 rel="noopener noreferrer"
                 className="social-icon"
               >
-                {socialIcons[key]}
+                {Icon}
               </a>
             );
           })}
@@ -99,13 +112,12 @@ export default function CrewCard({ photo, name, role, bio, social }) {
       <style jsx>{`
         .crew-card {
           width: 280px;
-          height: 450px; /* Fixed height */
+          height: 450px;
           border-radius: 12px;
           padding: 1.5rem;
-          /* Always blue border */
           border: 1px solid var(--color-blue);
-          background-color: rgba(0, 0, 0, 0.5);
-          color: var(--color-white);
+          background-color: var(--card-bg);
+          color: var(--foreground);
           margin: 1rem;
           display: flex;
           flex-direction: column;
@@ -114,33 +126,40 @@ export default function CrewCard({ photo, name, role, bio, social }) {
           position: relative;
           overflow: hidden;
           backdrop-filter: blur(5px);
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+          box-shadow: var(--shadow-md);
           cursor: pointer;
           opacity: 0;
           transform: translateY(10px);
           animation: fadeIn 0.6s forwards;
-          transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+          transition: var(--theme-transition), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
+        
         .crew-card.visible {
           opacity: 1;
           transform: translateY(0);
         }
+        
         @keyframes fadeIn {
           to {
             opacity: 1;
             transform: translateY(0);
           }
         }
+        
+        /* Hover effect with theme-aware colors matching ProjectCard */
         .crew-card.hovered {
           background: radial-gradient(
               circle 80px at var(--mouse-x) var(--mouse-y),
               var(--color-blue) 0%,
               rgba(0, 120, 255, 0.4) 40%,
               transparent 80%
-            )
-            rgba(0, 0, 0, 0.5);
+            ),
+            var(--card-bg);
           box-shadow: 0 0 30px rgba(0, 120, 255, 0.3) inset;
+          transform: translateY(-5px);
         }
+        
+        /* Shimmer effect matching ProjectCard */
         .crew-card.hovered::after {
           content: "";
           position: absolute;
@@ -157,7 +176,9 @@ export default function CrewCard({ photo, name, role, bio, social }) {
           );
           background-size: 200% 100%;
           animation: shimmer 1.5s infinite;
+          pointer-events: none;
         }
+        
         @keyframes shimmer {
           0% {
             background-position: -100% 0;
@@ -166,29 +187,37 @@ export default function CrewCard({ photo, name, role, bio, social }) {
             background-position: 100% 0;
           }
         }
-        .photo-container {
-          width: 100%;
-          height: 150px;
-          overflow: hidden;
-          border-radius: 12px;
-          margin-bottom: 1rem;
-          position: relative;
-          z-index: 2;
-        }
-        .profile-photo {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          display: block;
-        }
+        
         .card-content {
           position: relative;
           z-index: 1;
           flex-grow: 1;
           display: flex;
           flex-direction: column;
-          gap: 0.5rem;
+          overflow: hidden;
         }
+        
+        /* Fixing photo size */
+        .photo-container {
+          width: 120px;
+          height: 120px;
+          border-radius: 50%;
+          overflow: hidden;
+          margin: 0 auto 1rem;
+          border: 2px solid var(--color-blue);
+        }
+        
+        .profile-photo {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+        }
+        
+        .crew-card.hovered .profile-photo {
+          transform: scale(1.05);
+        }
+        
         .card-title {
           font-family: var(--font-ibm-plex-mono);
           font-size: 1.5rem;
@@ -196,7 +225,12 @@ export default function CrewCard({ photo, name, role, bio, social }) {
           position: relative;
           display: inline-block;
           transition: transform 0.3s ease, color 0.3s ease;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          max-width: 100%;
         }
+        
         .card-title::after {
           content: "";
           position: absolute;
@@ -209,60 +243,95 @@ export default function CrewCard({ photo, name, role, bio, social }) {
           transform-origin: left;
           transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
+        
         .crew-card.hovered .card-title {
           transform: translateY(-2px);
           color: var(--color-blue);
         }
+        
         .crew-card.hovered .card-title::after {
           transform: scaleX(1);
         }
+        
         .card-role {
           font-family: var(--font-roboto);
           font-weight: bold;
-          margin: 0;
-          opacity: 0.9;
+          margin: 0.5rem 0 0.7rem;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          color: var(--text-gray);
         }
+        
+        .card-bio {
+          font-family: var(--font-roboto);
+          font-size: 0.95rem;
+          line-height: 1.5;
+          margin: 0;
+          flex-grow: 1;
+          opacity: 0.85;
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+        }
+        
         .card-footer {
           display: flex;
           gap: 1rem;
           justify-content: center;
           align-items: center;
           padding-top: 1rem;
-          border-top: 1px solid rgba(255, 255, 255, 0.1);
+          border-top: 1px solid var(--card-border);
           position: relative;
-          z-index: 1;
+          z-index: 2;
         }
+        
         .social-icon {
           display: flex;
           justify-content: center;
           align-items: center;
-          width: 40px;
-          height: 40px;
+          width: 36px;
+          height: 36px;
           border-radius: 50%;
-          background-color: rgba(255, 255, 255, 0.1);
-          transition: background-color 0.3s ease, transform 0.3s ease;
-          font-size: 1.8rem;
-          color: var(--color-white);
+          background-color: rgba(0, 0, 0, 0.1);
+          transition: all 0.3s ease;
+          font-size: 1.1rem;
+          color: var(--foreground);
         }
+        
         .social-icon:hover {
           background-color: var(--color-blue);
           transform: scale(1.2);
+          color: var(--color-white);
         }
-        /* Responsive styles */
+        
         @media (max-width: 768px) {
           .crew-card {
             width: 100%;
             max-width: 350px;
-            min-height: 450px;
+            height: 400px;
+          }
+          
+          .photo-container {
+            width: 100px;
+            height: 100px;
           }
         }
+        
         @media (max-width: 480px) {
           .crew-card {
-            min-height: 420px;
+            height: 380px;
             padding: 1.2rem;
           }
+          
           .card-title {
             font-size: 1.3rem;
+          }
+          
+          .photo-container {
+            width: 90px;
+            height: 90px;
           }
         }
       `}</style>

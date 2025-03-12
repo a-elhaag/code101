@@ -92,22 +92,21 @@ export default function Table() {
           max-width: 900px;
           border-radius: 16px;
           overflow: hidden;
-          box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+          box-shadow: var(--shadow-md);
           position: relative;
         }
 
         .slogan-table {
           width: 100%;
           border-collapse: collapse;
-          background-color: rgba(0, 0, 0, 0.5);
+          background-color: var(--card-bg);
           backdrop-filter: blur(10px);
         }
 
         .slogan-table tr {
           position: relative;
           transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-          /* Changed divider between rows to blue if needed */
-          border-bottom: 1px solid rgba(0, 123, 255, 0.5);
+          border-bottom: 1px solid var(--card-border);
         }
 
         .slogan-table tr:last-child {
@@ -166,7 +165,7 @@ export default function Table() {
 
         .slogan-table td {
           padding: 1.8rem;
-          color: var(--color-white);
+          color: var(--foreground);
           transition: all 0.3s ease;
         }
 

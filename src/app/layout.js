@@ -3,6 +3,7 @@ import "./globals.css";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Analytics } from "@vercel/analytics/react";
+import ThemeInitializer from "@/components/ThemeInitializer";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -20,16 +21,29 @@ export const metadata = {
   title: "Code101",
   description: "Code101 - Learning Platform",
   icons: {
-    icon: "/favicon.svg",
-    shortcut: "/favicon-16x16.png",
-    apple: "/apple-touch-icon.png",
+    icon: [
+      { url: '/favicon.ico', sizes: 'any' },
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/favicon-16x16.png', sizes: '16x16', type: 'image/png' },
+    ],
   },
+  manifest: '/site.webmanifest',
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en" className={`${roboto.variable} ${ibmPlexMono.variable}`}>
       <body style={{ margin: 0 }}>
+        <ThemeInitializer />
+
+        {/* Remove Background Elements */}
+
         <Navbar />
 
         <main
@@ -37,7 +51,9 @@ export default function RootLayout({ children }) {
             minHeight: "100vh",
             paddingTop: "60px",
             paddingBottom: "70px",
-            backgroundColor: "var(--color-black)",
+            backgroundColor: "transparent",
+            transition: "var(--theme-transition)",
+            position: "relative",
           }}
         >
           {children}
@@ -45,6 +61,8 @@ export default function RootLayout({ children }) {
 
         <Footer />
         <Analytics />
+
+        {/* Remove the background element styles */}
       </body>
     </html>
   );
