@@ -54,8 +54,6 @@ export default function NotFound() {
 
   return (
     <>
-      {/* Add the network background */}
-      <NetworkBackground color="#007bff" density={15} speed={0.9} />
 
       <div
         ref={containerRef}
