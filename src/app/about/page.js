@@ -71,6 +71,22 @@ export default function AboutPage() {
           .content p {
             margin-bottom: 1.5rem;
           }
+
+          @media (max-width: 768px) {
+            .aboutPage {
+              max-width: 90%;
+              padding: 2rem 1rem;
+            }
+
+            .content {
+              font-size: 1rem;
+              max-width: 100%;
+            }
+
+            .heading {
+              font-size: 2rem;
+            }
+          }
         `}</style>
       </div>
     </div>

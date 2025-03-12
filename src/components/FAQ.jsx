@@ -157,6 +157,7 @@ export default function FAQ() {
           transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           border: 1px solid var(--card-border); /* Use theme variable */
           padding: 0 1rem;
+          text-align: center;
         }
 
         .faq-container.visible {
@@ -366,6 +367,9 @@ export default function FAQ() {
           .faq-container {
             padding: 1.5rem;
             margin: 2rem 1rem;
+            width: 90%;
+            margin: 2rem auto;
+            padding: 1rem;
           }
           
           .faq-heading {
@@ -380,6 +384,11 @@ export default function FAQ() {
           
           .faq-answer {
             padding: 0 1rem 1rem;
+          }
+
+          .faq-items {
+            text-align: left;
+            width: 100%;
           }
         }
 
