@@ -2,7 +2,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Button from "@/components/Button";
-import NetworkBackground from "@/components/NetworkBackground";
 
 export default function NotFound() {
   const router = useRouter();

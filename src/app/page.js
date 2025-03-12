@@ -1,7 +1,6 @@
 "use client";
 import { useRef } from "react";
 import dynamic from "next/dynamic";
-import NetworkBackground from "@/components/NetworkBackground";
 
 const Table = dynamic(() => import("@/components/Table"), { ssr: false });
 const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: false });
@@ -15,9 +14,6 @@ export default function Home() {
 
   return (
     <>
-      {/* Add the network background */}
-      <NetworkBackground color="#007bff" density={15} speed={0.8} />
-
       <section className="hero-section">
         {/* Removed the canvas element since it's now in the shared background component */}
 

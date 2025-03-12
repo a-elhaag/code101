@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import ProjectCard from '@/components/ProjectCard';
 import styles from './page.module.css';
 import LoadingSpinner from '@/components/LoadingSpinner';
-import NetworkBackground from "@/components/NetworkBackground";
 
 // Remove these exports that are causing the error
 // export const dynamic = 'force-dynamic';
@@ -29,9 +28,7 @@ export default function ProjectsPage() {
 
     return (
         <>
-            {/* Add the network background */}
-            <NetworkBackground color="#007bff" density={12} speed={0.7} />
-
+            {/* Removed <NetworkBackground color="#007bff" density={12} speed={0.7} /> */}
             <div className={styles.projectsPage}>
                 <div className={styles.pageHeader}>
                     <h1 className={styles.pageHeading}>Community Projects</h1>
