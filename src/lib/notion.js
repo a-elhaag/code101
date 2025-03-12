@@ -12,39 +12,6 @@ const databaseId = process.env.NOTION_DATABASE_ID;
  * with dynamic revalidation
  */
 export async function getApprovedProjects() {
-    try {
-        // Query the database for approved projects
-        const response = await notion.databases.query({
-            database_id: databaseId,
-            filter: {
-                property: 'Approved',
-                checkbox: {
-                    equals: true
-                }
-            },
-            sorts: [
-                {
-                    property: 'Submission Date',
-                    direction: 'descending'
-                }
-            ]
-        });
-
-        // Format the results
-        return response.results.map(page => {
-            const properties = page.properties;
-
-            return {
-                id: page.id,
-                project_name: properties['Project Name']?.title?.[0]?.text?.content || 'Unnamed Project',
-                github_link: properties['GitHub Link']?.url || '',
-                owner_name: properties['Team/Owner']?.rich_text?.[0]?.text?.content || 'Anonymous',
-                description: properties['Description']?.rich_text?.[0]?.text?.content || 'No description provided',
-                submission_date: properties['Submission Date']?.date?.start || null
-            };
-        });
-    } catch (error) {
-        console.error('Error fetching projects from Notion:', error);
-        return [];
-    }
+    // Placeholder for fetching data from Notion
+    return [];
 }
