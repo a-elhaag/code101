@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useRef } from "react";
 
-export default function NetworkBackground({ color = "#007bff", density = 10, speed = 1 }) {
+export default function NetworkBackground({ color = "#007bff", density = 5, speed = 0.7 }) {
     const canvasRef = useRef(null);
 
     useEffect(() => {
