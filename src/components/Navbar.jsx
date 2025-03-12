@@ -1,10 +1,12 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
-import ThemeToggle from "./ThemeToggle";
+import dynamic from "next/dynamic";
 
-export default function Navbar() {
+const ThemeToggle = dynamic(() => import("./ThemeToggle"), { ssr: false });
+
+function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [navHeight, setNavHeight] = useState(0);
   const pathname = usePathname(); // Current page path
@@ -17,15 +19,15 @@ export default function Navbar() {
     }
   }, []);
 
-  // Helper to set active link color
-  const getLinkStyle = (href) => ({
+  // Memoize style generation to prevent unnecessary re-renders
+  const getLinkStyle = useCallback((href) => ({
     fontFamily: "var(--font-ibm-plex-mono)",
     fontSize: "1.2rem",
     textDecoration: "none",
     padding: "0.5rem 1rem",
     transition: "color 0.2s ease, opacity 0.2s ease",
     color: pathname === href ? "var(--color-blue)" : "var(--foreground)",
-  });
+  }), [pathname]);
 
   return (
     <>
@@ -197,3 +199,5 @@ export default function Navbar() {
     </>
   );
 }
+
+export default React.memo(Navbar);

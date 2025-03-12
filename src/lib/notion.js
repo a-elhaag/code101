@@ -13,6 +13,9 @@ const databaseId = process.env.NOTION_DATABASE_ID;
  */
 export async function getApprovedProjects() {
     try {
+        if (process.env.NODE_ENV !== "production") {
+            console.log("Fetching projects from Notion...");
+        }
         // Query the database for approved projects
         const response = await notion.databases.query({
             database_id: databaseId,

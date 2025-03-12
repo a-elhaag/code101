@@ -1,8 +1,10 @@
 "use client";
 import { useRef } from "react";
-import Table from "@/components/Table";
-import FAQ from "@/components/FAQ";
+import dynamic from "next/dynamic";
 import NetworkBackground from "@/components/NetworkBackground";
+
+const Table = dynamic(() => import("@/components/Table"), { ssr: false });
+const FAQ = dynamic(() => import("@/components/FAQ"), { ssr: false });
 
 export default function Home() {
   const contentRef = useRef(null);
