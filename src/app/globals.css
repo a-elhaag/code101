@@ -88,6 +88,10 @@ body {
   transition: var(--theme-transition);
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
 /* Headings use IBM Plex Mono */
 h1,
 h2,
