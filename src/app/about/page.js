@@ -2,10 +2,9 @@
 import React from "react";
 import NetworkBackground from "@/components/NetworkBackground";
 
-export default function About() {
+export default function AboutPage() {
   return (
-    <>
-
+    <div className="about-page">
       <div className="aboutPage">
         <header className="header">
           <h1 className="heading">
@@ -28,6 +27,9 @@ export default function About() {
         </section>
 
         <style jsx>{`
+          .about-page {
+            padding: 0 1rem;
+          }
           .aboutPage {
             padding: 3rem 1rem;
             max-width: 1200px;
@@ -71,6 +73,6 @@ export default function About() {
           }
         `}</style>
       </div>
-    </>
+    </div>
   );
 }

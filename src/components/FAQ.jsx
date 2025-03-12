@@ -156,6 +156,7 @@ export default function FAQ() {
           transform: translateY(20px);
           transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
           border: 1px solid var(--card-border); /* Use theme variable */
+          padding: 0 1rem;
         }
 
         .faq-container.visible {
