@@ -6,8 +6,6 @@ import NetworkBackground from "@/components/NetworkBackground";
 export default function SubmitProjectPage() {
   return (
     <>
-      {/* Add the network background */}
-      <NetworkBackground color="#007bff" density={8} speed={0.5} />
 
       <div className="submit-page">
         <div className="page-header">

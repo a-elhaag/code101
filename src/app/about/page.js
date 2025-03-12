@@ -5,8 +5,6 @@ import NetworkBackground from "@/components/NetworkBackground";
 export default function About() {
   return (
     <>
-      {/* Add the network background */}
-      <NetworkBackground color="#007bff" density={8} speed={0.6} />
 
       <div className="aboutPage">
         <header className="header">
