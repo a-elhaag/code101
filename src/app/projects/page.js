@@ -5,6 +5,10 @@ import styles from './page.module.css';
 import LoadingSpinner from '@/components/LoadingSpinner';
 import NetworkBackground from "@/components/NetworkBackground";
 
+// Remove these exports that are causing the error
+// export const dynamic = 'force-dynamic';
+// export const revalidate = 0;
+
 export default function ProjectsPage() {
     const [projects, setProjects] = useState([]);
     const [loading, setLoading] = useState(true);
