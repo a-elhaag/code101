@@ -1,12 +1,15 @@
 "use client";
 import React from 'react';
-import ProjectSubmissionForm from '@/components/ProjectSubmissionForm';
+import dynamic from "next/dynamic";
 import NetworkBackground from "@/components/NetworkBackground";
+
+const ProjectSubmissionForm = dynamic(() => import("@/components/ProjectSubmissionForm"), {
+  ssr: false,
+});
 
 export default function SubmitProjectPage() {
   return (
     <>
-
       <div className="submit-page">
         <div className="page-header">
           <h1 className="page-heading">Submit Your Project</h1>
@@ -124,6 +127,13 @@ export default function SubmitProjectPage() {
             
             .info-section li {
               font-size: 1rem;
+            }
+          }
+          
+          @media (max-width: 992px) {
+            .info-section {
+              padding: 1.5rem;
+              margin: 2rem auto 0;
             }
           }
         `}</style>

@@ -165,6 +165,12 @@ export default function Home() {
             height: 30px;
           }
         }
+
+        @media (min-width: 1200px) {
+          .hero-content h1 {
+            font-size: 8rem;
+          }
+        }
       `}</style>
     </>
   );
