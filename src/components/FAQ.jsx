@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback, memo } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const faqData = [
   {
@@ -23,65 +23,6 @@ const faqData = [
       "It's a vibrant community where you can level up your skills, collaborate with peers, and showcase your projects."
   }
 ];
-
-const FaqItem = memo(({ item, index, isOpen, onToggle, isHovered, onHover, onMouseMove }) => {
-  return (
-    <div
-      id={`faq-item-${index}`}
-      className={`faq-item ${isOpen ? "open" : ""} ${isHovered ? "hovered" : ""}`}
-      style={{
-        "--delay": `${index * 0.1 + 0.2}s`,
-      }}
-      onMouseEnter={() => onHover(index)}
-      onMouseLeave={() => onHover(null)}
-      onMouseMove={(e) => onMouseMove(e, index)}
-    >
-      <button
-        className="faq-question"
-        onClick={onToggle}
-        aria-expanded={isOpen}
-      >
-        <span className="question-text">{item.question}</span>
-        <span className="icon">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 16 16"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <line
-              x1="2"
-              y1="8"
-              x2="14"
-              y2="8"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-            <line
-              className="vertical"
-              x1="8"
-              y1="2"
-              x2="8"
-              y2="14"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-            />
-          </svg>
-        </span>
-      </button>
-      <div className="faq-answer-wrapper" style={{
-        height: isOpen ? `${item.answer.length * 0.5 + 40}px` : "0px"
-      }}>
-        <div className="faq-answer">{item.answer}</div>
-      </div>
-    </div>
-  );
-});
-
-FaqItem.displayName = 'FaqItem';
 
 export default function FAQ() {
   const [activeIndex, setActiveIndex] = useState(null);
@@ -113,26 +54,22 @@ export default function FAQ() {
     };
   }, []);
 
-  const handleMouseMove = useCallback((e, index) => {
+  const handleToggle = (index) => {
+    setActiveIndex((prev) => (prev === index ? null : index));
+  };
+
+  // Track mouse position for highlight effect
+  const handleMouseMove = (e, index) => {
     if (hoveredItem === index) {
       const item = document.getElementById(`faq-item-${index}`);
       if (item) {
         const rect = item.getBoundingClientRect();
-        setMousePos({
-          x: e.clientX - rect.left,
-          y: e.clientY - rect.top
-        });
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        setMousePos({ x, y });
       }
     }
-  }, [hoveredItem]);
-
-  const handleHover = useCallback((index) => {
-    setHoveredItem(index);
-  }, []);
-
-  const handleToggle = useCallback((index) => {
-    setActiveIndex(prev => prev === index ? null : index);
-  }, []);
+  };
 
   return (
     <div
@@ -142,18 +79,67 @@ export default function FAQ() {
       <h2 className="faq-heading">Frequently Asked Questions</h2>
 
       <div className="faq-items">
-        {faqData.map((item, index) => (
-          <FaqItem
-            key={index}
-            item={item}
-            index={index}
-            isOpen={index === activeIndex}
-            onToggle={() => handleToggle(index)}
-            isHovered={index === hoveredItem}
-            onHover={handleHover}
-            onMouseMove={(e) => handleMouseMove(e, index)}
-          />
-        ))}
+        {faqData.map((item, index) => {
+          const isOpen = index === activeIndex;
+          const isHovered = index === hoveredItem;
+          return (
+            <div
+              id={`faq-item-${index}`}
+              key={index}
+              className={`faq-item ${isOpen ? "open" : ""} ${isHovered ? "hovered" : ""}`}
+              style={{
+                "--delay": `${index * 0.1 + 0.2}s`,
+                "--mouse-x": `${mousePos.x}px`,
+                "--mouse-y": `${mousePos.y}px`
+              }}
+              onMouseEnter={() => setHoveredItem(index)}
+              onMouseLeave={() => setHoveredItem(null)}
+              onMouseMove={(e) => handleMouseMove(e, index)}
+            >
+              <button
+                className="faq-question"
+                onClick={() => handleToggle(index)}
+                aria-expanded={isOpen}
+              >
+                <span className="question-text">{item.question}</span>
+                <span className="icon">
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <line
+                      x1="2"
+                      y1="8"
+                      x2="14"
+                      y2="8"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                    <line
+                      className="vertical"
+                      x1="8"
+                      y1="2"
+                      x2="8"
+                      y2="14"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                    />
+                  </svg>
+                </span>
+              </button>
+              <div className="faq-answer-wrapper" style={{
+                height: isOpen ? `${item.answer.length * 0.5 + 40}px` : "0px"
+              }}>
+                <div className="faq-answer">{item.answer}</div>
+              </div>
+            </div>
+          );
+        })}
       </div>
 
       <style jsx>{`
