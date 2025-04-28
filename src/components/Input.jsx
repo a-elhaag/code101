@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 
-export default function Input({ label, placeholder, value, onChange }) {
+export default function Input({ label, placeholder, value, onChange, type = "text", ...restProps }) {
   const [isFocused, setIsFocused] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
   const inputRef = useRef(null);
@@ -21,6 +21,10 @@ export default function Input({ label, placeholder, value, onChange }) {
         onChange={onChange}
         onFocus={() => setIsFocused(true)}
         onBlur={() => setIsFocused(false)}
+        type={type}
+        spellCheck="false"
+        data-ms-editor="true"
+        {...restProps} // Pass any additional props to the input element
       />
 
       <style jsx>{`

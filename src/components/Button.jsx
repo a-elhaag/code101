@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-const Button = ({ size = "md", color = "blue", children, onClick }) => {
+const Button = ({ size = "md", color = "blue", children, onClick, disabled = false, ...restProps }) => {
     // Local state to track hover
     const [isHovered, setIsHovered] = useState(false);
 
@@ -9,8 +9,9 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
     const baseStyles = {
         borderRadius: "6px",
         transition: "all 0.3s ease",
-        cursor: "pointer",
+        cursor: disabled ? "not-allowed" : "pointer",
         fontFamily: "var(--font-ibm-plex-mono)",
+        opacity: disabled ? 0.65 : 1,
     };
 
     // Size variants
@@ -41,9 +42,9 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
 
     // Hover styles for each color
     const hoverStyles = {
-        black: { backgroundColor: "var(--color-blue-dark)" }, // Changed from gray to blue-dark
-        white: { opacity: "0.5" }, // slightly fade
-        blue: { opacity: "0.8" },  // slightly fade
+        black: { backgroundColor: "var(--color-blue-dark)" },
+        white: { opacity: disabled ? 0.65 : 0.5 },
+        blue: { opacity: disabled ? 0.65 : 0.8 },
     };
 
     // Combine all styles: base + size + color + (optional hover)
@@ -51,7 +52,7 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
         ...baseStyles,
         ...sizeStyles[size],
         ...colorStyles[color],
-        ...(isHovered ? hoverStyles[color] : {}),
+        ...(isHovered && !disabled ? hoverStyles[color] : {}),
     };
 
     return (
@@ -59,7 +60,9 @@ const Button = ({ size = "md", color = "blue", children, onClick }) => {
             style={buttonStyle}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            onClick={onClick}
+            onClick={disabled ? undefined : onClick}
+            disabled={disabled}
+            {...restProps}
         >
             {children}
         </button>
