@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import dynamic from "next/dynamic";
+import Button from "@/components/Button";
 
 const ThemeToggle = dynamic(() => import("./ThemeToggle"), { ssr: false });
 
@@ -54,9 +55,21 @@ function Navbar() {
           </Link>
         </div>
 
-        {/* Theme Toggle */}
-        <div className="theme-toggle-container">
-          <ThemeToggle />
+        {/* Actions Container for Theme Toggle and Sign In */}
+        <div className="actions-container">
+          {/* Theme Toggle */}
+          <div className="theme-toggle-container">
+            <ThemeToggle />
+          </div>
+
+          {/* Sign In Button - Desktop */}
+          <div className="signin-button-container">
+            <Link href="/signin">
+              <Button size="sm" color={pathname === "/signin" ? "blue" : "white"}>
+                Sign In
+              </Button>
+            </Link>
+          </div>
         </div>
 
         {/* Mobile Menu Button */}
@@ -101,6 +114,14 @@ function Navbar() {
           >
             Meet the Crew
           </Link>
+
+          {/* Sign In Button - Mobile */}
+          <div className="mobile-signin">
+            <Link href="/signin" onClick={() => setIsOpen(false)}>
+              <Button size="sm" color="blue">Sign In</Button>
+            </Link>
+          </div>
+
           <div className="mobile-theme-toggle">
             <ThemeToggle />
           </div>
@@ -129,9 +150,22 @@ function Navbar() {
             gap: 1.5rem;
           }
           
-          .theme-toggle-container {
+          .actions-container {
             position: absolute;
-            right: 6rem;
+            right: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+          }
+          
+          .theme-toggle-container {
+            display: flex;
+            align-items: center;
+          }
+          
+          .signin-button-container {
+            display: flex;
+            align-items: center;
           }
 
           .mobile-button {
@@ -169,13 +203,14 @@ function Navbar() {
             top: 100%;
           }
           
-          .mobile-theme-toggle {
+          .mobile-theme-toggle,
+          .mobile-signin {
             margin-top: 1rem;
             display: none;
           }
 
           @media (max-width: 767px) {
-            .desktop-links, .theme-toggle-container {
+            .desktop-links, .actions-container {
               display: none;
             }
 
@@ -188,7 +223,8 @@ function Navbar() {
               padding: 1rem 0;
             }
             
-            .mobile-theme-toggle {
+            .mobile-theme-toggle,
+            .mobile-signin {
               display: flex;
               justify-content: center;
               margin-bottom: 0.5rem;
