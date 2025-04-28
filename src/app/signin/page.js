@@ -100,7 +100,7 @@ export default function SignInPage() {
           padding: 2.5rem;
           border-radius: 12px;
           background-color: var(--card-bg);
-          border: 1px solid var(--card-border);
+          border: 1px solid var(--color-blue-dark);
           box-shadow: var(--shadow-md);
           transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
           animation: slideUp 0.6s ease-out;
