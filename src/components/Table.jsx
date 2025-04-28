@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
 const tableData = [
   {
@@ -23,6 +23,9 @@ const tableData = [
 ];
 
 export default function Table() {
+  // Track which row is being hovered and mouse position
+  const [hoveredRow, setHoveredRow] = useState(null);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const tableRef = useRef(null);
   const rowRefs = useRef([]);
 
@@ -30,6 +33,19 @@ export default function Table() {
   useEffect(() => {
     rowRefs.current = rowRefs.current.slice(0, tableData.length);
   }, []);
+
+  // Handle mouse movement for dynamic highlight effect
+  const handleMouseMove = (e, rowKey) => {
+    if (hoveredRow === rowKey) {
+      const rowElement = rowRefs.current[tableData.findIndex((row) => row.key === rowKey)];
+      if (rowElement) {
+        const rect = rowElement.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        setMousePos({ x, y });
+      }
+    }
+  };
 
   return (
     <div className="table-container">
@@ -40,9 +56,14 @@ export default function Table() {
               <tr
                 key={row.key}
                 ref={(el) => (rowRefs.current[index] = el)}
-                className="row-animate"
+                onMouseEnter={() => setHoveredRow(row.key)}
+                onMouseLeave={() => setHoveredRow(null)}
+                onMouseMove={(e) => handleMouseMove(e, row.key)}
+                className={`row-animate ${hoveredRow === row.key ? "hovered" : ""}`}
                 style={{
-                  "--delay": `${index * 0.1}s`
+                  "--delay": `${index * 0.1}s`,
+                  "--mouse-x": `${mousePos.x}px`,
+                  "--mouse-y": `${mousePos.y}px`
                 }}
               >
                 <td className="title-cell">
@@ -106,9 +127,9 @@ export default function Table() {
           }
         }
 
-        .slogan-table tr:hover {
+        .slogan-table tr.hovered {
           background: radial-gradient(
-            circle 80px at center,
+            circle 80px at var(--mouse-x) var(--mouse-y),
             var(--color-blue) 0%,
             rgba(0, 120, 255, 0.4) 40%,
             transparent 80%
@@ -116,7 +137,7 @@ export default function Table() {
           box-shadow: 0 0 30px rgba(0, 120, 255, 0.3) inset;
         }
 
-        .slogan-table tr:hover::after {
+        .slogan-table tr.hovered::after {
           content: "";
           position: absolute;
           top: 0;
@@ -181,12 +202,12 @@ export default function Table() {
           transition: transform 0.4s cubic-bezier(0.23, 1, 0.32, 1);
         }
 
-        .slogan-table tr:hover .title-text {
+        tr.hovered .title-text {
           transform: translateY(-2px);
           color: var(--color-blue);
         }
 
-        .slogan-table tr:hover .title-text::after {
+        tr.hovered .title-text::after {
           transform: scaleX(1.1);
         }
 
@@ -202,7 +223,7 @@ export default function Table() {
           transition: opacity 0.3s ease, transform 0.3s ease;
         }
 
-        .slogan-table tr:hover .desc-content {
+        tr.hovered .desc-content {
           opacity: 1;
           transform: translateX(5px);
         }
