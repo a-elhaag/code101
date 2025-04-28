@@ -8,6 +8,84 @@ import { useRouter } from "next/navigation";
 
 export default function ProfilePage() {
     const router = useRouter();
+
+    // Event handlers and component logic
+    const handleUserInfoChange = (e) => {
+        const { name, value } = e.target;
+        setUserInfo((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handlePasswordChange = (e) => {
+        const { name, value } = e.target;
+        setPasswordInfo((prev) => ({ ...prev, [name]: value }));
+    };
+
+    const handleUpdateUserInfo = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        // Simulate API call
+        setTimeout(() => {
+            setMessage({ text: "Profile updated successfully!", type: "success" });
+            setIsLoading(false);
+
+            // Clear message after 3 seconds
+            setTimeout(() => {
+                setMessage({ text: "", type: "" });
+            }, 3000);
+        }, 1000);
+    };
+
+    const handleUpdatePassword = async (e) => {
+        e.preventDefault();
+        setIsLoading(true);
+
+        // Validate passwords match
+        if (passwordInfo.newPassword !== passwordInfo.confirmPassword) {
+            setMessage({ text: "New passwords don't match!", type: "error" });
+            setIsLoading(false);
+            return;
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+            setMessage({ text: "Password updated successfully!", type: "success" });
+            setIsLoading(false);
+
+            // Reset password fields
+            setPasswordInfo({
+                currentPassword: "",
+                newPassword: "",
+                confirmPassword: ""
+            });
+
+            // Clear message after 3 seconds
+            setTimeout(() => {
+                setMessage({ text: "", type: "" });
+            }, 3000);
+        }, 1000);
+    };
+
+    const handleDeleteProject = (projectId) => {
+        if (window.confirm("Are you sure you want to delete this project?")) {
+            setUserProjects(userProjects.filter(project => project.id !== projectId));
+            setMessage({ text: "Project deleted successfully!", type: "success" });
+
+            // Clear message after 3 seconds
+            setTimeout(() => {
+                setMessage({ text: "", type: "" });
+            }, 3000);
+        }
+    };
+
+    // States moved below the handler functions
+    // Form submission states
+    const [isLoading, setIsLoading] = useState(false);
+    const [activeTab, setActiveTab] = useState("info");
+    const [message, setMessage] = useState({ text: "", type: "" });
+    const [currentTheme, setCurrentTheme] = useState('dark'); // Default theme
+    const [mounted, setMounted] = useState(false);
+
     // User information state
     const [userInfo, setUserInfo] = useState({
         name: "John Doe",
@@ -40,86 +118,27 @@ export default function ProfilePage() {
         }
     ]);
 
-    // Form submission states
-    const [isLoading, setIsLoading] = useState(false);
-    const [activeTab, setActiveTab] = useState("info");
-    const [message, setMessage] = useState({ text: "", type: "" });
+    // Detect theme for dark/light mode styling
+    useEffect(() => {
+        setMounted(true);
+        const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+        setCurrentTheme(theme);
 
-    // Handle user info change
-    const handleUserInfoChange = (e) => {
-        const { name, value } = e.target;
-        setUserInfo((prev) => ({ ...prev, [name]: value }));
-    };
-
-    // Handle password change
-    const handlePasswordChange = (e) => {
-        const { name, value } = e.target;
-        setPasswordInfo((prev) => ({ ...prev, [name]: value }));
-    };
-
-    // Update user info
-    const handleUpdateUserInfo = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-
-        // Simulate API call
-        setTimeout(() => {
-            setMessage({ text: "Profile updated successfully!", type: "success" });
-            setIsLoading(false);
-
-            // Clear message after 3 seconds
-            setTimeout(() => {
-                setMessage({ text: "", type: "" });
-            }, 3000);
-        }, 1000);
-    };
-
-    // Update password
-    const handleUpdatePassword = async (e) => {
-        e.preventDefault();
-        setIsLoading(true);
-
-        // Validate passwords match
-        if (passwordInfo.newPassword !== passwordInfo.confirmPassword) {
-            setMessage({ text: "New passwords don't match!", type: "error" });
-            setIsLoading(false);
-            return;
-        }
-
-        // Simulate API call
-        setTimeout(() => {
-            setMessage({ text: "Password updated successfully!", type: "success" });
-            setIsLoading(false);
-
-            // Reset password fields
-            setPasswordInfo({
-                currentPassword: "",
-                newPassword: "",
-                confirmPassword: ""
+        // Listen for theme changes
+        const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+                if (mutation.attributeName === 'data-theme') {
+                    setCurrentTheme(document.documentElement.getAttribute('data-theme') || 'dark');
+                }
             });
+        });
 
-            // Clear message after 3 seconds
-            setTimeout(() => {
-                setMessage({ text: "", type: "" });
-            }, 3000);
-        }, 1000);
-    };
-
-    // Delete project handler
-    const handleDeleteProject = (projectId) => {
-        if (window.confirm("Are you sure you want to delete this project?")) {
-            setUserProjects(userProjects.filter(project => project.id !== projectId));
-            setMessage({ text: "Project deleted successfully!", type: "success" });
-
-            // Clear message after 3 seconds
-            setTimeout(() => {
-                setMessage({ text: "", type: "" });
-            }, 3000);
-        }
-    };
+        observer.observe(document.documentElement, { attributes: true });
+        return () => observer.disconnect();
+    }, []);
 
     return (
-        <div className="profile-container">
+        <div className={`profile-container ${currentTheme === 'dark' ? 'dark-mode' : ''}`}>
             <h1 className="profile-title">My Profile</h1>
 
             {/* Message display */}
@@ -298,6 +317,12 @@ export default function ProfilePage() {
           box-shadow: var(--shadow-md);
           backdrop-filter: blur(10px);
           animation: fadeIn 0.6s ease-out;
+        }
+        
+        /* Add blue border for dark mode */
+        .profile-container.dark-mode {
+          border: 2px solid var(--color-blue);
+          box-shadow: 0 0 15px rgba(0, 123, 255, 0.3);
         }
         
         .profile-title {
