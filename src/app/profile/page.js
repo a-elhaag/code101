@@ -106,14 +106,12 @@ export default function ProfilePage() {
             id: "1",
             title: "React Component Library",
             description: "A collection of reusable React components with Tailwind CSS styling.",
-            status: "approved",
             repoLink: "https://github.com/johndoe/react-components"
         },
         {
             id: "2",
             title: "Weather App",
             description: "A weather application built with React that shows current weather conditions and forecasts.",
-            status: "pending",
             repoLink: "https://github.com/johndoe/weather-app"
         }
     ]);
@@ -271,11 +269,6 @@ export default function ProfilePage() {
                         <div className="projects-grid">
                             {userProjects.map((project) => (
                                 <div key={project.id} className="project-wrapper">
-                                    <div className="project-status">
-                                        <span className={`status-badge ${project.status}`}>
-                                            {project.status.charAt(0).toUpperCase() + project.status.slice(1)}
-                                        </span>
-                                    </div>
                                     <div className="project-card-wrapper">
                                         <ProjectCard
                                             title={project.title}
@@ -461,40 +454,6 @@ export default function ProfilePage() {
           display: flex;
           flex-direction: column;
           gap: 1rem;
-        }
-        
-        .project-status {
-          position: absolute;
-          top: 1rem;
-          right: 1rem;
-          z-index: 10;
-        }
-        
-        .status-badge {
-          padding: 0.25rem 0.75rem;
-          border-radius: 20px;
-          font-family: var(--font-ibm-plex-mono);
-          font-size: 0.8rem;
-          font-weight: bold;
-          text-transform: uppercase;
-        }
-        
-        .status-badge.approved {
-          background-color: rgba(0, 255, 0, 0.2);
-          color: #00cc00;
-          border: 1px solid rgba(0, 255, 0, 0.3);
-        }
-        
-        .status-badge.pending {
-          background-color: rgba(255, 165, 0, 0.2);
-          color: #ffa500;
-          border: 1px solid rgba(255, 165, 0, 0.3);
-        }
-        
-        .status-badge.rejected {
-          background-color: rgba(255, 0, 0, 0.2);
-          color: #ff3333;
-          border: 1px solid rgba(255, 0, 0, 0.3);
         }
         
         .project-card-wrapper {
